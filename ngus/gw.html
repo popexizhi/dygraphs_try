@@ -1,0 +1,44 @@
+<html>
+<head>
+<script type="text/javascript"
+  src="dygraph-combined-dev.js"></script>
+</head>
+<body>
+<p>fgw</p>
+<div id="fgw" style="width:1500px; height:300px;"></div>
+<p>bgw</p>
+<div id="bgw" style="width:1500px; height:300px;"></div>
+<script type="text/javascript">
+  new Dygraph(
+    document.getElementById("fgw"),
+    "fgw_relay.csv", // path to CSV file
+    {
+      rollPeriod: 1,
+      showRoller: true,
+      avoidMinZero: true,//y轴的最小值不为0，相当于y=0那条线上升了
+      title:"fgw_relay",
+      titleHeight:50,//标题高度
+      axisLabelWidth:100,//X Y轴的标题的宽度
+      ylabel: 'package (numbers)',
+      labelsDivStyles: { 'textAlign': 'right' },
+      showRangeSelector: true //时间控制滑动控制
+    }          // options
+  );
+
+  new Dygraph(
+    document.getElementById("bgw"),
+    "bgw_relay.csv", // path to CSV file
+    {
+      rollPeriod: 1,
+      showRoller: true,
+      avoidMinZero: true,//y轴的最小值不为0，相当于y=0那条线上升了
+      title:"bgw_relay",
+      titleHeight:50,//标题高度
+      axisLabelWidth:100,//X Y轴的标题的宽度
+      ylabel: 'package (numbers)',
+      showRangeSelector: true
+    }          // options
+  );
+</script>
+</body>
+</html>

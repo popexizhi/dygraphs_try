@@ -1,0 +1,28 @@
+<html>
+<head>
+<script type="text/javascript"
+  src="dygraph-combined-dev.js"></script>
+</head>
+<body>
+<div id="graphdiv2"
+  style="width:1500px; height:500px;"></div>
+<script type="text/javascript">
+  g2 = new Dygraph(
+    document.getElementById("graphdiv2"),
+    "fgw_relay.csv", // path to CSV file
+    {
+      rollPeriod: 1,
+      showRoller: true,
+      avoidMinZero: true,//y轴的最小值不为0，相当于y=0那条线上升了
+      title:"fgw_relay",
+      titleHeight:50,//标题高度
+      axisLabelWidth:100,//X Y轴的标题的宽度
+
+
+
+
+    }          // options
+  );
+</script>
+</body>
+</html>
