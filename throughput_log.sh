@@ -118,7 +118,8 @@ test(){
     #mkdir test
     #save_gw_std nag_normal_online test
 
-    get_grep "epollLoop_throughput" bgw.log.txt_192.168.1.114 
+    #get_grep "epollLoop_throughput" bgw.log.txt_192.168.1.114 
+    has_fush $1
 }
 save_gw_std(){
     echo "save gw log... gw_log_dir:$1- 结果存储dir $2"
@@ -133,6 +134,18 @@ save_gw_std(){
         echo "${gw_std}.csv">>${res_des}.csvfiles
     done
     mv ${server_log_dir}/*.csv ${ph}
+}
+has_fush(){
+#
+	echo "$1"
+	fgw_num=`cat $1|grep fgw_|wc -l`
+	if ((${fgw_num}>1))
+	then
+		echo "fgw_num more"
+	else
+		echo "0"
+	fi
+	
 }
 
 save_gw_log(){
@@ -163,6 +176,6 @@ main(){
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
 }
-main $1
-#test 
+#main $1
+test $1 
 exit 0
