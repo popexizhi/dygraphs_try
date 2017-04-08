@@ -151,6 +151,10 @@ save_gw_std(){
     if ((${fgw_num}>1))
     then
 	echo "fgw need fulsh: ${fgw_num}" 
+	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
+	fush_log="fgw_fush.file"
+	htmlmod="fgw_std.html_mod"	
+    	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "fgw only one "
     fi
