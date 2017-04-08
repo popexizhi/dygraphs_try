@@ -5,5 +5,6 @@ cp report/*.py ${ph}
 cp readme ${ph}
 cp *.sh ${ph}
 cd ${ph}&&git add *
-cd ${ph}&&git commit -m "$1"
+git commit -m "$1"
+cd ../
 

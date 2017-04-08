@@ -116,10 +116,11 @@ test(){
     #fush_log $1 
     
     #mkdir test
-    #save_gw_std nag_normal_online test
+    save_gw_std nag_normal_online test
+    save_gw_std cluster_normal_online test
 
     #get_grep "epollLoop_throughput" bgw.log.txt_192.168.1.114 
-    has_fush $1
+    #has_fush $1
 }
 save_gw_std(){
     echo "save gw log... gw_log_dir:$1- 结果存储dir $2"
@@ -133,19 +134,36 @@ save_gw_std(){
         get_grep "connected_client" ${server_log_dir}/${gw_std}
         echo "${gw_std}.csv">>${res_des}.csvfiles
     done
+    #fush ?
+    bgw_num=`echo "${gw_log_list}"|grep bgw|wc -l`
+    echo "bgw_num:${bgw_num}"
+    if ((${bgw_num}>1))
+    then
+	echo "bgw need fulsh: ${bgw_num}" 
+    else
+	echo "bgw only one "
+    fi
+    fgw_num=`echo "${gw_log_list}"|grep fgw|wc -l`
+    if ((${fgw_num}>1))
+    then
+	echo "fgw need fulsh: ${fgw_num}" 
+    else
+	echo "fgw only one "
+    fi
+
     mv ${server_log_dir}/*.csv ${ph}
 }
 has_fush(){
 #
-	echo "$1"
-	fgw_num=`cat $1|grep fgw_|wc -l`
-	if ((${fgw_num}>1))
+	echo "$1i---logpre is $2"
+	logpre=$2
+	file_num=`cat $1|grep ${logpre}|grep -v std|wc -l`
+	if ((${file_num}>1))
 	then
-		echo "fgw_num more"
+		echo "$logpre is more"
 	else
-		echo "0"
+		echo "one "
 	fi
-	
 }
 
 save_gw_log(){
@@ -171,9 +189,8 @@ main(){
     echo $ph>$ph/res.log
     save_app_log ${source_log_dir} ${ph} #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
     save_app_std ${source_log_dir} ${ph}        #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
-    #fush_log ${ph} 
 
-    save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
+    save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
 }
 #main $1
