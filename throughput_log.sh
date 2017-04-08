@@ -143,6 +143,9 @@ save_gw_std(){
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
 	fush_log="bgw_fush.file"
 	htmlmod="bgw_std.html_mod"	
+    	echo "title:bgw_std">${ph}/${htmlmod}
+    	echo "des:bgw_std">>${ph}/${htmlmod}
+    	echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "bgw only one "
@@ -154,6 +157,9 @@ save_gw_std(){
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
 	fush_log="fgw_fush.file"
 	htmlmod="fgw_std.html_mod"	
+    	echo "title:fgw_std">${ph}/${htmlmod}
+    	echo "des:fgw_std">>${ph}/${htmlmod}
+    	echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "fgw only one "
