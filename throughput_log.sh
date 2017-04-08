@@ -141,10 +141,9 @@ save_gw_std(){
     then
 	echo "bgw need fulsh: ${bgw_num}" 
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
-	echo "log_list: ${log_list}"
 	fush_log="bgw_fush.file"
-	
-    	#fush_fp $ph} "app_std.html_mod" "${log_list}" "${fush_log}"
+	htmlmod="bgw_std.html_mod"	
+    	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "bgw only one "
     fi
