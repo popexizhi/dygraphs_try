@@ -203,6 +203,47 @@ save_gw_log(){
         get_grep "epollLoop_throughput" ${server_log_dir}/${gw_std}
         echo "${gw_std}.csv">>${res_des}.csvfiles
     done
+    #fush ?
+    bgw_num=`echo "${gw_log_list}"|grep bgw|wc -l`
+    
+    htmlmod="bgw_log.html_mod"	
+    echo "bgw_num:${bgw_num}"
+    echo "title:bgw_log">${ph}/${htmlmod}
+    echo "des:bgw_log">>${ph}/${htmlmod}
+    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+    if ((${bgw_num}>1))
+    then
+	echo "bgw need fulsh: ${bgw_num}" 
+	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
+	fush_log="bgw_log_fush.file"
+    	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
+    else
+	echo "bgw only one "
+	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
+    	echo "csv:${log_list}">>${ph}/${htmlmod}
+	cur=`pwd`
+    	cd ${ph}&&python ../report/Report.py ${htmlmod}
+	cd ${cur}
+    fi
+    fgw_num=`echo "${gw_log_list}"|grep fgw|wc -l`
+    htmlmod="fgw_log.html_mod"	
+    echo "title:fgw_log">${ph}/${htmlmod}
+    echo "des:fgw_log">>${ph}/${htmlmod}
+    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+    if ((${fgw_num}>1))
+    then
+	echo "fgw need fulsh: ${fgw_num}" 
+	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
+	fush_log="fgw_log_fush.file"
+    	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
+    else
+	echo "fgw only one "
+	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
+    	echo "csv:${log_list}">>${ph}/${htmlmod}
+	cur=`pwd`
+    	cd ${ph}&&python ../report/Report.py ${htmlmod}
+	cd ${cur}
+    fi
     mv ${server_log_dir}/*.csv ${ph}
 }
 
