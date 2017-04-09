@@ -42,19 +42,6 @@ pre {
 </tr>
 </table>
 %s
-<pre>
-ab res:
-Requests per second: 113.01 /sec (mean)
-Time per request: 88.484 [ms] (mean)
-Time per request: 8.848 [ms] (mean, across all concurrent requests)
-Transfer rate: 183.32 [Kbytes/sec] received
-Connection Times (ms)
-min mean[+/-sd] median max
-Connect: 0 33 88.0 2 295
-Processing: 0 49 93.9 9 485
-Waiting: 0 45 83.6 9 485
-Total: 1 82 166.7 11 780
-</pre>
 </body>
 """
 def output_html(html_title, proxy_app_des, proxy_app_h4, dlist, htmlrp_des_list, fp):

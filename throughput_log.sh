@@ -113,7 +113,9 @@ fush_fp(){
     echo "csv:${fush_log}">>${fpdir}/${resfp}
     echo "python ../fuselog/FuseCsv.py ${log_list} ${fush_log}"
     cur_dir=`pwd`
-    cd ${fpdir}&&python ../fuselog/FuseCsv.py ${log_list} ${fush_log} ${resfp}
+    cd ${fpdir}
+    ls -all .
+    python ../fuselog/FuseCsv.py ${log_list} ${fush_log} ${resfp}
     python ../report/Report.py ${resfp}
     cd ${cur_dir}
 }
@@ -140,6 +142,7 @@ save_gw_std(){
         get_grep "connected_client" ${server_log_dir}/${gw_std}
         echo "${gw_std}.csv">>${res_des}.csvfiles
     done
+    mv ${server_log_dir}/*.csv ${ph}
     #fush ?
     bgw_num=`echo "${gw_log_list}"|grep bgw|wc -l`
     
@@ -189,7 +192,6 @@ save_gw_std(){
 	cd ${cur}
     fi
 
-    mv ${server_log_dir}/*.csv ${ph}
 }
 has_fush(){
 #
@@ -216,6 +218,7 @@ save_gw_log(){
         get_grep "epollLoop_throughput" ${server_log_dir}/${gw_std}
         echo "${gw_std}.csv">>${res_des}.csvfiles
     done
+    mv ${server_log_dir}/*.csv ${ph}
     #fush ?
     bgw_num=`echo "${gw_log_list}"|grep bgw|wc -l`
     
@@ -264,7 +267,6 @@ save_gw_log(){
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
     fi
-    mv ${server_log_dir}/*.csv ${ph}
 }
 
 main(){
