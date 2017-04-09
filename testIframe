@@ -5,4 +5,7 @@ des:cluster_test_nag_normal_online
 destabledata:fgw:(2)
 destabledata:bgw:(1)
 destabledata:app:(2)
-iframe_list:(app_server_downlink.html,app_server_std.html,bgw_std.html,fgw_std.html)
+iframe_list:app_server_downlink.html
+iframe_list:app_server_std.html
+iframe_list:bgw_std.html
+iframe_list:fgw_std.html

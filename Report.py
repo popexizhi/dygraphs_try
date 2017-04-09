@@ -18,6 +18,7 @@ class source_data():
         self.testtime=None
         self.des=None
 	self.destabledata=None
+	self.iframelist=None
         for i in com:
             i = re.sub("\n", "", i)
             x = i.split(":")    
@@ -44,7 +45,11 @@ class source_data():
 			self.destabledata = []
 			self.fkind = "output_data"
                 self.destabledata.append([x[1], x[2]])
-		
+	    if "iframe_list" == x[0]:
+		if None == self.iframelist:
+			self.iframelist = []	
+		self.iframelist.append([x[1], x[1]])
+
     def init_tabledata(self, data_list, id=-1):
         """
         data_list = ['tabledata', 'app_server_275734.log.txt_172.16.110.2_tcp_throughput_downlink.log', '(199.219, 0.379813, 569.0, 186.63922181546567, 11.23183313929444)\n']
@@ -77,6 +82,11 @@ class source_data():
 	else:
 	    for i in self.destabledata:
 		print "[destabledata] %s" % str(i)
+	if None == self.iframelist:
+	    pass
+	else:
+	    for i in self.iframelist:
+		print "[iframe_list] %s" % str(i)
         print "$"*100
 
 	
@@ -95,6 +105,6 @@ class report():
 if __name__=="__main__":
     x= source_data(sys.argv[1])
     x.log()
-    #y = report()
-    #print y.get_iframe_html(x)
+    y = report()
+    print y.get_iframe_html(x)
 

@@ -18,13 +18,12 @@ pre {
 <body style="font-family: Arial, Helvetica, sans-serif;
     font-family: "微软雅黑";">
     <div style=" box-shadow:0px 4px 4px rgba(0,0,0,0.12); padding:10px;">
-      <h3>App Proxy Load Test </h3>
-        <h4 style="color:#666">http://192.168.1.25:80/</h4>
+      <h3>%s Load Test </h3>
         </div>
         <div style="padding:10px;">
-          <h4> proxy_app_des: %s<br>
-              %s </h4>
-                <p>app proxy 测试结果概述</p>
+          <h4> Test Des: %s<br>
+               Test Time: %s </h4>
+                <p>测试结果概述</p>
                   <div style="padding:20px;">
 <p>
 
@@ -61,7 +60,17 @@ Total: 1 82 166.7 11 780
 def output_html(html_title, proxy_app_des, proxy_app_h4, dlist, htmlrp_des_list, fp):
     table_data_tr_td = get_table_data_tr_tdX(dlist) # table list 列表数据
     iframe_str = get_iframe_br(htmlrp_des_list)    #iframe 中详细的测试报告连接
-    new_str = mod_app_html % (html_title, proxy_app_des, proxy_app_h4, table_data_tr_td, iframe_str)
+    new_str = mod_app_html % (html_title, html_title, proxy_app_des, proxy_app_h4, table_data_tr_td, iframe_str)
+    f =open(fp,"w")
+    f.write(new_str)
+    f.close()
+    return fp
+
+def output_data(source_data):
+    table_data_tr_td = get_table_data_tr_tdX(source_data.destabledata) # table list 列表数据
+    iframe_str = get_iframe_br(source_data.iframelist)    #iframe 中详细的测试报告连接
+    new_str = mod_app_html % (source_data.title, source_data.title, source_data.des, source_data.testtime, table_data_tr_td, iframe_str)
+    fp = "%s_%s.html" % (source_data.title, source_data.testtime)
     f =open(fp,"w")
     f.write(new_str)
     f.close()
@@ -76,12 +85,6 @@ def get_iframe_br(htmlrp_des_list):
         com = "%s%s" % (com, com_line)
     return com
 
-def get_table_data_tr_td(dlist):
-    """table list 列表数据 """
-    com =""
-    for i in dlist:
-        com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (com, i[0],i[1],i[2],i[3],i[4])
-    return com
 
 def get_table_data_tr_tdX(dlist):
     """table list 列表数据 """
