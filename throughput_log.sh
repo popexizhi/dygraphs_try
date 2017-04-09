@@ -152,6 +152,7 @@ save_gw_std(){
 	echo "bgw only one "
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
     	echo "csv:${log_list}">>${ph}/${htmlmod}
+	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
@@ -171,6 +172,7 @@ save_gw_std(){
 	echo "fgw only one "
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
     	echo "csv:${log_list}">>${ph}/${htmlmod}
+	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
@@ -221,6 +223,7 @@ save_gw_log(){
 	echo "bgw only one "
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
     	echo "csv:${log_list}">>${ph}/${htmlmod}
+	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
@@ -240,6 +243,7 @@ save_gw_log(){
 	echo "fgw only one "
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
     	echo "csv:${log_list}">>${ph}/${htmlmod}
+	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
