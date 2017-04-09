@@ -1,12 +1,15 @@
 # -*- coding:utf8
 from ReportTempletX import * 
+from ReportIfram import * 
 import re,sys
 class source_data():
     def __init__(self, fp):
         f = open(fp)    
         com = f.readlines()
         f.close()
+	self.fkind = None
         self.init_data(com)
+
     
     def init_data(self, com):
         self.tabledata=None
@@ -23,6 +26,7 @@ class source_data():
             if "tabledata" == x[0]:
 		if None == self.tabledata:
                 	self.tabledata=[["name", "max", "min", "num", "avg", "stdev"]]
+			self.fkind = "templet_data"
 		
                 res = self.init_tabledata(x)
                 self.tabledata.append(x[1:2]+res)
@@ -38,6 +42,7 @@ class source_data():
 		# destabledata:fgw:(2)
 		if None == self.destabledata :
 			self.destabledata = []
+			self.fkind = "output_data"
                 self.destabledata.append([x[1], x[2]])
 		
     def init_tabledata(self, data_list, id=-1):
@@ -50,6 +55,9 @@ class source_data():
         x = com.split(",")
         print str(x)
         return x
+
+    def getkind(self):
+	return self.fkind
 
     def log(self):
         print "$"*100
@@ -71,11 +79,15 @@ class source_data():
 		print "[destabledata] %s" % str(i)
         print "$"*100
 
+	
 
 class report():
     def get_iframe_html(self, source_data):
         self.log(source_data)
-        return templet_data(source_data)
+	if "templet_data" == source_data.getkind():
+        	return templet_data(source_data)
+	if "output_data" == source_data.getkind():
+        	return output_data(source_data)
         
     def log(self, html_source):
         html_source.log()

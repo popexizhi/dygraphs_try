@@ -29,23 +29,6 @@ pre {
 <p>
 
 <table width="100%%" border="1" frame="box" rules="all" cellpadding="1" cellspacing="0" class="legendTable">
-<tr class="legendHeader">
-<td>
-Scale
-</td>
-<td>
-Measurement
-</td>
-<td>
-Graph Minimum
-</td>
-<td>
-Graph Average
-</td>
-<td>
-Graph Maximum
-</td>
-</tr>
 <tr class="legendRow">
 %s
 </table>
@@ -76,7 +59,7 @@ Total: 1 82 166.7 11 780
 </body>
 """
 def output_html(html_title, proxy_app_des, proxy_app_h4, dlist, htmlrp_des_list, fp):
-    table_data_tr_td = get_table_data_tr_td(dlist) # table list 列表数据
+    table_data_tr_td = get_table_data_tr_tdX(dlist) # table list 列表数据
     iframe_str = get_iframe_br(htmlrp_des_list)    #iframe 中详细的测试报告连接
     new_str = mod_app_html % (html_title, proxy_app_des, proxy_app_h4, table_data_tr_td, iframe_str)
     f =open(fp,"w")
@@ -100,8 +83,19 @@ def get_table_data_tr_td(dlist):
         com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (com, i[0],i[1],i[2],i[3],i[4])
     return com
 
+def get_table_data_tr_tdX(dlist):
+    """table list 列表数据 """
+    com =""
+    for i in dlist:
+	com = "\n%s" % com
+	for j in i:
+	    com = "%s<td>%s</td>" % (com, j) 
+	com = "%s<tr>" % com
+        #com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (com, i[0],i[1],i[2],i[3],i[4])
+    return com
+
 if __name__=="__main__":
     ifram_list=[["num_app_proxy", "1219_10_app_proxy.log_1482136270.41.html"],\
                 ["proxy_test_use_", "proxy_test_use_time_app_proxy_1482144366.5.html"],\
                 ["precent_app_proxy", "precent_app_proxy_1482143740.02.html"]]
-    output_html(html_title="app proxy 测试报告", proxy_app_des="app proxy 测试报告", proxy_app_h4="2016-12-20", dlist=[[1,1,1,1,1,1]], htmlrp_des_list=ifram_list, fp="prox.html")
+    output_html(html_title="app proxy 测试报告", proxy_app_des="app proxy 测试报告", proxy_app_h4="2016-12-20", dlist=[[1,1,1]], htmlrp_des_list=ifram_list, fp="prox.html")
