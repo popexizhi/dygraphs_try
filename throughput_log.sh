@@ -48,9 +48,12 @@ save_app_log(){
     ph=$2                #结果存储位置
     res_des=$2/app_log.html_mod   #结果描述存储位置
     echo "title:app_server_downlink">${res_des}
-    echo "app_log:app_server_downlink.html">>${ph}/res.log
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${res_des}
+
     app_log_list=`ls -all ${server_log_dir}|grep app_server_|grep -v std_out|grep -v csv|awk '{print $9}'`
+    file_num=`ls -all ${server_log_dir}|grep app_server_|grep -v std_out|grep -v csv|wc -l`
+    echo "destabledata:app_log:${file_num}">>${ph}/res.log
+    echo "iframe_list:app_server_downlink.html">>${ph}/res.log
     for app_log in ${app_log_list}
     do 
         server_log=${server_log_dir}/${app_log}
@@ -70,9 +73,12 @@ save_app_std(){
     ph=$2           #结果存储位置
     res_des=$2/app_std.html_mod   #结果描述存储位置
     echo "title:app_server_std">${res_des}
-    echo "app_std:app_server_std.html">>${ph}/res.log
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${res_des}
-    fp_list=`ls -all ${server_log_dir}|grep std_out|grep -v csv|awk '{print $9}'` #appserver log文件列表
+
+    fp_list=`ls -all ${server_log_dir}|grep app_server_|grep std_out|grep -v csv|awk '{print $9}'` #appserver log文件列表
+    fp_num=`ls -all ${server_log_dir}|grep app_server_|grep std_out|grep -v csv|wc -l`  #appserver log文件列表
+    echo "destabledata:app_std:${fp_num}">>${ph}/res.log
+    echo "iframe_list:app_server_std.html">>${ph}/res.log
     for i in ${fp_list}
     do
         echo "app std output file ${server_log_dir}/$i"
@@ -142,6 +148,9 @@ save_gw_std(){
     echo "title:bgw_std">${ph}/${htmlmod}
     echo "des:bgw_std">>${ph}/${htmlmod}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+
+    echo "destabledata:bgw_std:${bgw_num}">>${ph}/res.log
+    echo "iframe_list:bgw_std.html">>${ph}/res.log
     if ((${bgw_num}>1))
     then
 	echo "bgw need fulsh: ${bgw_num}" 
@@ -162,6 +171,8 @@ save_gw_std(){
     echo "title:fgw_std">${ph}/${htmlmod}
     echo "des:fgw_std">>${ph}/${htmlmod}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+    echo "destabledata:fgw_std:${fgw_num}">>${ph}/res.log
+    echo "iframe_list:fgw_std.html">>${ph}/res.log
     if ((${fgw_num}>1))
     then
 	echo "fgw need fulsh: ${fgw_num}" 
@@ -213,6 +224,9 @@ save_gw_log(){
     echo "title:bgw_log">${ph}/${htmlmod}
     echo "des:bgw_log">>${ph}/${htmlmod}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+
+    echo "destabledata:bgw_log:${bgw_num}">>${ph}/res.log
+    echo "iframe_list:bgw_log.html">>${ph}/res.log
     if ((${bgw_num}>1))
     then
 	echo "bgw need fulsh: ${bgw_num}" 
@@ -233,6 +247,8 @@ save_gw_log(){
     echo "title:fgw_log">${ph}/${htmlmod}
     echo "des:fgw_log">>${ph}/${htmlmod}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
+    echo "destabledata:fgw_log:${bgw_num}">>${ph}/res.log
+    echo "iframe_list:fgw_log.html">>${ph}/res.log
     if ((${fgw_num}>1))
     then
 	echo "fgw need fulsh: ${fgw_num}" 
@@ -256,12 +272,15 @@ main(){
     echo "source log dir is ${source_log_dir}"
     ph="resapp_`date '+%y%m%d%H%M'`"
     mkdir ${ph}
-    echo $ph>$ph/res.log
+    echo "title:${source_log_dir}">${ph}/res.log
+    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/res.log
+    echo "des:cluster_test_${source_log_dir}">>${ph}/res.log
     save_app_log ${source_log_dir} ${ph} #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
     save_app_std ${source_log_dir} ${ph}        #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
 
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
+    cd ${ph}&&python ../report/Report.py "res.log" #html report
 }
 main $1
 #test $1 
