@@ -117,7 +117,7 @@ test(){
     
     #mkdir test
     save_gw_std nag_normal_online test
-    save_gw_std cluster_normal_online test
+    #save_gw_std cluster_normal_online test
 
     #get_grep "epollLoop_throughput" bgw.log.txt_192.168.1.114 
     #has_fush $1
@@ -136,33 +136,44 @@ save_gw_std(){
     done
     #fush ?
     bgw_num=`echo "${gw_log_list}"|grep bgw|wc -l`
+    
+    htmlmod="bgw_std.html_mod"	
     echo "bgw_num:${bgw_num}"
+    echo "title:bgw_std">${ph}/${htmlmod}
+    echo "des:bgw_std">>${ph}/${htmlmod}
+    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     if ((${bgw_num}>1))
     then
 	echo "bgw need fulsh: ${bgw_num}" 
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
 	fush_log="bgw_fush.file"
-	htmlmod="bgw_std.html_mod"	
-    	echo "title:bgw_std">${ph}/${htmlmod}
-    	echo "des:bgw_std">>${ph}/${htmlmod}
-    	echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "bgw only one "
+	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
+    	echo "csv:${log_list}">>${ph}/${htmlmod}
+	cur=`pwd`
+    	cd ${ph}&&python ../report/Report.py ${htmlmod}
+	cd ${cur}
     fi
     fgw_num=`echo "${gw_log_list}"|grep fgw|wc -l`
+    htmlmod="fgw_std.html_mod"	
+    echo "title:fgw_std">${ph}/${htmlmod}
+    echo "des:fgw_std">>${ph}/${htmlmod}
+    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     if ((${fgw_num}>1))
     then
 	echo "fgw need fulsh: ${fgw_num}" 
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
 	fush_log="fgw_fush.file"
-	htmlmod="fgw_std.html_mod"	
-    	echo "title:fgw_std">${ph}/${htmlmod}
-    	echo "des:fgw_std">>${ph}/${htmlmod}
-    	echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/${htmlmod}
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	echo "fgw only one "
+	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
+    	echo "csv:${log_list}">>${ph}/${htmlmod}
+	cur=`pwd`
+    	cd ${ph}&&python ../report/Report.py ${htmlmod}
+	cd ${cur}
     fi
 
     mv ${server_log_dir}/*.csv ${ph}
@@ -207,6 +218,6 @@ main(){
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
 }
-#main $1
-test $1 
+main $1
+#test $1 
 exit 0
