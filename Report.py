@@ -3,10 +3,11 @@ from ReportTempletX import *
 from ReportIfram import * 
 import re,sys
 class source_data():
-    def __init__(self, fp):
+    def __init__(self, fp, dir=None):
         f = open(fp)    
         com = f.readlines()
         f.close()
+	self.dir = dir
 	self.fkind = None
         self.init_data(com)
 
@@ -48,7 +49,10 @@ class source_data():
 	    if "iframe_list" == x[0]:
 		if None == self.iframelist:
 			self.iframelist = []	
-		self.iframelist.append([x[1], x[1]])
+		if None != self.dir:
+			self.iframelist.append([x[1], "%s/%s" % (self.dir ,x[1])])
+		else:
+			self.iframelist.append([x[1], x[1]])
 
     def init_tabledata(self, data_list, id=-1):
         """
@@ -103,7 +107,11 @@ class report():
         html_source.log()
         
 if __name__=="__main__":
-    x= source_data(sys.argv[1])
+    try:
+	dir = sys.argv[2]
+    except IndexError:
+	dir = None
+    x= source_data(sys.argv[1], dir)
     x.log()
     y = report()
     print y.get_iframe_html(x)

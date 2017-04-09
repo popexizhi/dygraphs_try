@@ -282,7 +282,7 @@ main(){
 
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
-    cd ${ph}&&python ../report/Report.py "res.log" #html report
+    python report/Report.py "${ph}/res.log" "${ph}"  #html report
 }
 main $1
 #test $1 
