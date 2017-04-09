@@ -1,0 +1,8 @@
+csv:app_server_downlink_fush.file
+title:nag_normal_online
+testtime:2017-4-5
+des:cluster_test_nag_normal_online
+destabledata:fgw:(2)
+destabledata:bgw:(1)
+destabledata:app:(2)
+iframe_list:(app_server_downlink.html,app_server_std.html,bgw_std.html,fgw_std.html)

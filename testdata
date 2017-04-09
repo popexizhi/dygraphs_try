@@ -1,0 +1,6 @@
+tabledata:app_server_275734.log.txt_172.16.110.2_tcp_throughput_downlink.log:(199.219, 0.379813, 569.0, 186.63922181546567, 11.23183313929444)
+tabledata:app_server_275735.log.txt_172.16.110.3_tcp_throughput_downlink.log:(210.938, 0.440374, 574.0, 186.7228661567945, 12.540412192986443)
+csv:app_server_downlink_fush.file
+title:app_server_downlink
+testtime:2017-4-5
+des:cluster_app_server
