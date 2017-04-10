@@ -51,7 +51,7 @@ save_app_log(){
     echo "title:app_server_downlink">${res_des}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${res_des}
 
-    app_log_list=`ls -all ${server_log_dir}|grep app_server_|grep -v std_out|grep -v csv|awk '{print $9}'`
+    app_log_list=`ls -all ${server_log_dir}|grep app_server_|grep -v std_out|grep -v csv|grep -v ".swp"|awk '{print $9}'`
     file_num=`ls -all ${server_log_dir}|grep app_server_|grep -v std_out|grep -v csv|wc -l`
     echo "destabledata:app_log:${file_num}">>${ph}/res.log
     echo "iframe_list:app_server_downlink.html">>${ph}/res.log
@@ -76,7 +76,7 @@ save_app_std(){
     echo "title:app_server_std">${res_des}
     echo "testtime:`date +%y-%m-%d-%H-%M`">>${res_des}
 
-    fp_list=`ls -all ${server_log_dir}|grep app_server_|grep std_out|grep -v csv|awk '{print $9}'` #appserver log文件列表
+    fp_list=`ls -all ${server_log_dir}|grep app_server_|grep std_out|grep -v csv|grep -v ".swp"|awk '{print $9}'` #appserver log文件列表
     fp_num=`ls -all ${server_log_dir}|grep app_server_|grep std_out|grep -v csv|wc -l`  #appserver log文件列表
     echo "destabledata:app_std:${fp_num}">>${ph}/res.log
     echo "iframe_list:app_server_std.html">>${ph}/res.log
