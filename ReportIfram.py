@@ -37,11 +37,10 @@ pre {
 <table>
 <tr>
 <tb>
-</pre>
+%s
 </tb>
 </tr>
 </table>
-%s
 </body>
 """
 def output_html(html_title, proxy_app_des, proxy_app_h4, dlist, htmlrp_des_list, fp):
@@ -65,11 +64,18 @@ def output_data(source_data):
 
 def get_iframe_br(htmlrp_des_list):
     """iframe 中详细的测试报告连接 """
-    res = """<iframe id="iframe" src="%s" height="700" width="1800" frameborder="0" scrolling="no">%s</iframe><br>\n"""
+    res = """<tb><iframe id="iframe" src="%s" height="700" width="850" frameborder="0" scrolling="no">%s</iframe></tb>\n"""
     com = ""
+    id = 0
     for i in htmlrp_des_list:
         com_line = res % (str(i[1]), str(i[0])) #[0] html report title; [1] html report fp
-        com = "%s%s" % (com, com_line)
+        if 0 == id:
+            com = "%s%s" % (com, com_line)
+            id = id + 1
+        else:
+            com = "%s%s<br>" % (com, com_line)
+            id = 0
+            
     return com
 
 

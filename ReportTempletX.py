@@ -118,7 +118,7 @@ CSAct[/*CMP*/ 'BC43C8C88'] = new Array(CSGotoLink,/*URL*/ 'Report0.xls','');
 				<td>
 					<div class="pane_full">
 <div id="graphdiv2"
-  style="width:1500px; height:500px;"></div>
+  style="width:800px; height:500px;"></div>
 <script type="text/javascript">
   g2 = new Dygraph(
     document.getElementById("graphdiv2"),
