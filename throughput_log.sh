@@ -1,4 +1,5 @@
 #!/bin/bash
+source log_csv.sh
 get_csv(){
     resfp=$1        #log所在文件夹
     grep_kind=$2    #log类型
@@ -95,8 +96,9 @@ fush_log(){
     fpdir=$1
     resfp=$2
     app_server_log_list=`ls -all ${fpdir}|grep csv|grep app_server|grep -v std_out|grep downlink|awk '{print $9}'|sed ':a;N;$!ba;s/\n/ /g'`
-    app_server_downlink_fush_log="app_server_downlink_fush.file"
+    app_server_downlink_fush_log="app_server_log_fush.file"
     echo ${app_server_log_list} ${app_server_downlink_fush_log}
+    log_time ${app_server_downlink_fush_log}
     echo "csv:${app_server_downlink_fush_log}">>${fpdir}/${resfp}
     echo "python ../fuselog/FuseCsv.py ${app_server_log_list} ${app_server_downlink_fush_log}"
     cur_dir=`pwd`
@@ -110,6 +112,7 @@ fush_fp(){
     resfp=$2
     log_list=$3
     fush_log=$4
+    std_log_time ${fush_log}
     echo "csv:${fush_log}">>${fpdir}/${resfp}
     echo "python ../fuselog/FuseCsv.py ${log_list} ${fush_log}"
     cur_dir=`pwd`
@@ -163,7 +166,8 @@ save_gw_std(){
     else
 	echo "bgw only one "
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
-    	echo "csv:${log_list}">>${ph}/${htmlmod}
+    std_log_time ${log_list}	
+    echo "csv:${log_list}">>${ph}/${htmlmod}
 	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
@@ -185,7 +189,8 @@ save_gw_std(){
     else
 	echo "fgw only one "
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
-    	echo "csv:${log_list}">>${ph}/${htmlmod}
+    std_log_time ${log_list}	
+    echo "csv:${log_list}">>${ph}/${htmlmod}
 	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
@@ -239,7 +244,8 @@ save_gw_log(){
     else
 	echo "bgw only one "
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
-    	echo "csv:${log_list}">>${ph}/${htmlmod}
+    log_time ${log_list}
+    echo "csv:${log_list}">>${ph}/${htmlmod}
 	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
@@ -261,12 +267,30 @@ save_gw_log(){
     else
 	echo "fgw only one "
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
-    	echo "csv:${log_list}">>${ph}/${htmlmod}
+    log_time ${log_list}
+    echo "csv:${log_list}">>${ph}/${htmlmod}
 	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
 	cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
     fi
+}
+get_csv_time(){
+    echo "dir is $1"
+    dir=$1
+    log_list=`cat ${dir}/*mod|grep csv|grep log|sed 's/csv://g'`
+    for i in ${log_list}
+    do
+        log_time ${dir}/${i}
+    done
+    echo "log_time: ${log_list}"
+    log_list=`cat ${dir}/*mod|grep csv|grep -v log|sed 's/csv://g'`
+    for i in ${log_list}
+    do
+        std_log_time ${dir}/${i}
+    done
+    echo "std_time: ${log_list}"
+    
 }
 
 main(){
@@ -283,6 +307,8 @@ main(){
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
     python report/Report.py "${ph}/res.log" "${ph}"  #html report
+    sleep 1
+    get_csv_time ${ph}
     sshpass -p'abc123,./' scp *.html slim@192.168.1.216:/data/provision_test/load_test/cluster/
     sshpass -p'abc123,./' scp -r ${ph} slim@192.168.1.216:/data/provision_test/load_test/cluster/
     #rm  *.html
