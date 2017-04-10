@@ -28,7 +28,7 @@ get_grep(){
         ;; 
    "connected_client" )
         echo "time,connected_client">${fp}.csv
-        cat ${fp}|sed 's/ .*: /,/g'|sed 's/\[//g'|sed 's/-.\{3\}:.\{3\}\]//g'|grep -v "start\|change,soft"|grep "^2[0-9]\{3\}-"|sed 's/-//g'|sed 's/^[0-9]\{8\}/&\//g'>>${fp}.csv
+        cat ${fp}|sed 's/ .*: /,/g'|sed 's/\[//g'|sed 's/-.\{2\}.\?:.\{2\}.\?\]//g'|grep -v "start\|change,soft"|grep "^2[0-9]\{3\}-"|sed 's/-//g'|sed 's/^[0-9]\{8\}/&\//g'>>${fp}.csv
         ;;
    "epollLoop_throughput" )
         echo "time,epollLoop_sent(kb),epollLoop_read(kb)">${fp}.csv
@@ -295,7 +295,8 @@ main(){
     ph="resapp_`date '+%y%m%d%H%M'`"
     mkdir ${ph}
     echo "title:${source_log_dir}">${ph}/res.log
-    echo "testtime:`date +%y-%m-%d-%H-%M`">>${ph}/res.log
+    use_date=`date +%y-%m-%d-%H-%M`
+    echo "testtime:${use_date}">>${ph}/res.log
     echo "des:cluster_test_${source_log_dir}">>${ph}/res.log
     save_app_log ${source_log_dir} ${ph} #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
     save_app_std ${source_log_dir} ${ph}        #收集结果并处理 $1 原始log位置 $2结果存储log的文件夹
@@ -303,6 +304,7 @@ main(){
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
     python report/Report.py "${ph}/res.log" "${ph}"  #html report
+    echo "http://192.168.1.216/test/provision_test/load_test/cluster/${source_log_dir}_${use_date}.html">"cluster_test_result_html.txt" #jenkins use file
     sleep 1
     get_csv_time ${ph}
     sshpass -p'abc123,./' scp *.html slim@192.168.1.216:/data/provision_test/load_test/cluster/
@@ -313,5 +315,6 @@ main(){
     mkdir back
 }
 main $1
+#cluster_test_result_html.txt
 #test $1 
 exit 0
