@@ -98,7 +98,6 @@ fush_log(){
     app_server_log_list=`ls -all ${fpdir}|grep csv|grep app_server|grep -v std_out|grep downlink|awk '{print $9}'|sed ':a;N;$!ba;s/\n/ /g'`
     app_server_downlink_fush_log="app_server_log_fush.file"
     echo ${app_server_log_list} ${app_server_downlink_fush_log}
-    log_time ${app_server_downlink_fush_log}
     echo "csv:${app_server_downlink_fush_log}">>${fpdir}/${resfp}
     echo "python ../fuselog/FuseCsv.py ${app_server_log_list} ${app_server_downlink_fush_log}"
     cur_dir=`pwd`
@@ -112,7 +111,6 @@ fush_fp(){
     resfp=$2
     log_list=$3
     fush_log=$4
-    std_log_time ${fush_log}
     echo "csv:${fush_log}">>${fpdir}/${resfp}
     echo "python ../fuselog/FuseCsv.py ${log_list} ${fush_log}"
     cur_dir=`pwd`
@@ -164,15 +162,15 @@ save_gw_std(){
 	fush_log="bgw_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
-	echo "bgw only one "
-	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
-    std_log_time ${log_list}	
-    echo "csv:${log_list}">>${ph}/${htmlmod}
-	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
-	cur=`pwd`
-    	cd ${ph}&&python ../report/Report.py ${htmlmod}
-	cd ${cur}
+	    echo "bgw only one "
+	    log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
+        echo "csv:${log_list}">>${ph}/${htmlmod}
+	    python fuselog/StaticCsv.py "${ph}/${log_list}" "${ph}/${htmlmod}" #tabledata
+	    cur=`pwd`
+        cd ${ph}&&python ../report/Report.py ${htmlmod}
+	    cd ${cur}
     fi
+
     fgw_num=`echo "${gw_log_list}"|grep fgw|wc -l`
     htmlmod="fgw_std.html_mod"	
     echo "title:fgw_std">${ph}/${htmlmod}
@@ -187,14 +185,14 @@ save_gw_std(){
 	fush_log="fgw_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
-	echo "fgw only one "
-	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
-    std_log_time ${log_list}	
-    echo "csv:${log_list}">>${ph}/${htmlmod}
-	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
-	cur=`pwd`
+	    echo "fgw only one "
+	    log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
+        echo "csv:${log_list}">>${ph}/${htmlmod}
+	    echo 'python fuselog/StaticCsv.py "${ph}/${log_list}" "${ph}/${htmlmod}" ' #tabledata
+	    python fuselog/StaticCsv.py "${ph}/${log_list}" "${ph}/${htmlmod}" #tabledata
+	    cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
-	cd ${cur}
+	    cd ${cur}
     fi
 
 }
@@ -242,14 +240,13 @@ save_gw_log(){
 	fush_log="bgw_log_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
-	echo "bgw only one "
-	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
-    log_time ${log_list}
-    echo "csv:${log_list}">>${ph}/${htmlmod}
-	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
-	cur=`pwd`
+	    echo "bgw only one "
+	    log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'`
+        echo "csv:${log_list}">>${ph}/${htmlmod}
+	    python fuselog/StaticCsv.py "${ph}/${log_list}" "${ph}/${htmlmod}" #tabledata
+	    cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
-	cd ${cur}
+	    cd ${cur}
     fi
     fgw_num=`echo "${gw_log_list}"|grep fgw|wc -l`
     htmlmod="fgw_log.html_mod"	
@@ -260,17 +257,16 @@ save_gw_log(){
     echo "iframe_list:fgw_log.html">>${ph}/res.log
     if ((${fgw_num}>1))
     then
-	echo "fgw need fulsh: ${fgw_num}" 
-	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
-	fush_log="fgw_log_fush.file"
+        echo "fgw need fulsh: ${fgw_num}" 
+	    log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
+	    fush_log="fgw_log_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
-	echo "fgw only one "
-	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
-    log_time ${log_list}
-    echo "csv:${log_list}">>${ph}/${htmlmod}
-	python fuselog/StaticCsv.py "${server_log_dir}/${log_list}" "${ph}/${htmlmod}" #tabledata
-	cur=`pwd`
+	    echo "fgw only one "
+	    log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'`
+        echo "csv:${log_list}">>${ph}/${htmlmod}
+	    python fuselog/StaticCsv.py "${ph}/${log_list}" "${ph}/${htmlmod}" #tabledata
+	    cur=`pwd`
     	cd ${ph}&&python ../report/Report.py ${htmlmod}
 	cd ${cur}
     fi
@@ -278,13 +274,13 @@ save_gw_log(){
 get_csv_time(){
     echo "dir is $1"
     dir=$1
-    log_list=`cat ${dir}/*mod|grep csv|grep log|sed 's/csv://g'`
+    log_list=`cat ${dir}/*mod|grep csv|grep -v std_out|grep log|sed 's/csv://g'`
     for i in ${log_list}
     do
         log_time ${dir}/${i}
     done
     echo "log_time: ${log_list}"
-    log_list=`cat ${dir}/*mod|grep csv|grep -v log|sed 's/csv://g'`
+    log_list=`cat ${dir}/*mod|grep csv|grep std_out|sed 's/csv://g'`
     for i in ${log_list}
     do
         std_log_time ${dir}/${i}
@@ -311,9 +307,10 @@ main(){
     get_csv_time ${ph}
     sshpass -p'abc123,./' scp *.html slim@192.168.1.216:/data/provision_test/load_test/cluster/
     sshpass -p'abc123,./' scp -r ${ph} slim@192.168.1.216:/data/provision_test/load_test/cluster/
-    #rm  *.html
-    #rm -rf ${ph}
-    
+    mv  *.html back
+    mv  ${ph} back
+    rm -rf back
+    mkdir back
 }
 main $1
 #test $1 

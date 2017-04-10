@@ -114,5 +114,5 @@ if __name__=="__main__":
     x= source_data(sys.argv[1], dir)
     x.log()
     y = report()
-    print y.get_iframe_html(x)
+    print "http://192.168.1.216/test/provision_test/load_test/cluster/%s" % str(y.get_iframe_html(x))
 
