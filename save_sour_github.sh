@@ -8,4 +8,5 @@ cur=`pwd`
 cd ${ph}&&git add *
 cd ${ph}&&git commit -m "$1"
 cd ${cur}
+echo "gitlab**************************************"
 ./save_sour.sh $1
