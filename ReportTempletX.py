@@ -7,8 +7,8 @@ html_str = """
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
 		<title></title>
-		<link href="css_js/Properties.css" rel="stylesheet" media="screen">
-        <script type="text/javascript" src="css_js/dygraph-combined-dev.js"></script>
+		<link href="../css_js/Properties.css" rel="stylesheet" media="screen">
+        <script type="text/javascript" src="../css_js/dygraph-combined-dev.js"></script>
 			<script type="text/javascript"><!--
 function CSClickReturn () {
 	var bAgent = window.navigator.userAgent;
@@ -128,7 +128,7 @@ CSAct[/*CMP*/ 'BC43C8C88'] = new Array(CSGotoLink,/*URL*/ 'Report0.xls','');
       avoidMinZero: true,//y轴的最小值不为0，相当于y=0那条线上升了
       axisLabelWidth:100,//X Y轴的标题的宽度
       fillGraph: true,//背景色显示      
-      stackedGraph: true, //叠加图      
+      //stackedGraph: true, //叠加图      
       stepPlot: true, //数据显示增长步骤
 
     }          // options

@@ -283,6 +283,11 @@ main(){
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
     python report/Report.py "${ph}/res.log" "${ph}"  #html report
+    sshpass -p'abc123,./' scp *.html slim@192.168.1.216:/data/provision_test/load_test/cluster/
+    sshpass -p'abc123,./' scp -r ${ph} slim@192.168.1.216:/data/provision_test/load_test/cluster/
+    #rm  *.html
+    #rm -rf ${ph}
+    
 }
 main $1
 #test $1 
