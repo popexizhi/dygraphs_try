@@ -159,7 +159,7 @@ save_gw_std(){
     then
 	echo "bgw need fulsh: ${bgw_num}" 
 	log_list=`echo "${gw_log_list}"|grep bgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
-	fush_log="bgw_fush.file"
+	fush_log="bgw_std_out_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	    echo "bgw only one "
@@ -182,7 +182,7 @@ save_gw_std(){
     then
 	echo "fgw need fulsh: ${fgw_num}" 
 	log_list=`echo "${gw_log_list}"|grep fgw|sed 's/$/.csv/g'|sed ':a;N;$!ba;s/\n/ /g'`
-	fush_log="fgw_fush.file"
+	fush_log="fgw_std_out_fush.file"
     	fush_fp ${ph} "${htmlmod}" "${log_list}" "${fush_log}"
     else
 	    echo "fgw only one "
