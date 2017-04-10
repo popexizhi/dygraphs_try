@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "github**************************************"
 ph="/jenkins/test/workspace/dygraphs_try"
 cp fuselog/*.py ${ph}
 cp report/*.py ${ph}
