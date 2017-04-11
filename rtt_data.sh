@@ -37,10 +37,11 @@ main(){
     uelog=$1
     resdir=$2
     resrttfile=$3
+    uemod="ue_html.mod"
     echo 'dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" '
     dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" 
     echo "start rtt 分析"
-    python ue_rtt/ana_rtt.py "${resrttfile}"
+    python ue_rtt/ana_rtt.py "${resrttfile}" ${resdir} "${resdir}/${uemod}"
 }
 main $1 $2 $3
 #test

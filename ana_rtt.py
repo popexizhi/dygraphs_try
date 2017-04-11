@@ -71,7 +71,7 @@ class ana_rtt():
             res_fp = "test.log"
         else:
             fp = fp.split("/")[-1]
-            use_fp = "test/%s/%s_percentage_avg.log" % (save_dir, str(fp))
+            use_fp = "%s/%s_percentage_avg.log" % (save_dir, str(fp))
             res_fp = "%s/%s_percentage_avg.log" % (save_dir, str(fp))
             self.log(use_fp)
         f=open(use_fp, "w")
@@ -162,18 +162,24 @@ class ana_rtt():
             pass
         else:
             fp = fp.split("/")[-1]
-            fp = "test/%s/%s" % (save_dir, str(fp))
+            fp = "%s/%s" % (save_dir, str(fp))
         self.log(fp)
         f = open("%s.csv" % fp, "w")
         f.write(com)
         f.close()
         return "%s.csv" % fp
 if __name__=="__main__":
-    try:
-        dp=sys.argv[1]
-    except IndexError:
-        dp="testdata/test.back"
+    dp=sys.argv[1]
+    dir=sys.argv[2]
+    modfile=sys.argv[3]
+    #except IndexError:
+    #     dp="testdata/test.back"
     x = ana_rtt()
     #print x.doing(dp, None, None, "../testdata/")
     print dp
-    print x.doing(dp, None, None)
+    res = x.doing(dp, None, None, dir)
+    res_str = "csv:%s\ncsv:%s\ntabledata:%s" % (res[0],res[2],res[1])
+    print res_str
+    f =open(modfile, "a")
+    f.write(res_str)
+    f.close()
