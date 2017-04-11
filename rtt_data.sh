@@ -43,6 +43,7 @@ rtt_main(){
     echo "title:uertt">${resdir}/${uemod}
     echo "title:uerttpre">${resdir}/${uemodPercent}
     echo "iframe_list:uertt.html">>$4 #写入html名称到ifram_mod
+    echo "iframe_list:uerttpre.html">>$4 #写入html名称到ifram_mod
     echo "testtime:`date +'%y-%m-%d %H-%M'`">>${resdir}/${uemod}
     echo "testtime:`date +'%y-%m-%d %H-%M'`">>${resdir}/${uemodPercent}
     echo "des: ue log rtt 统计">>${resdir}/${uemod}

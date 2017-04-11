@@ -215,11 +215,20 @@ def get_table_data_tr_td(dlist):
     row_com = """<tr class="legendRow">"""
     index = 0
     for i in dlist:
-        if 0 == index:
-            com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>%s" % (com, i[0],i[1],i[2],i[3],i[4], i[5], row_com)
-            index = index + 1
+        if len(i) < 5:
+            for j in i:
+                com = "%s\n<td>%s</td>" % (com, str(j)) 
+            
+            if 0 == index:
+                com = "%s%s" % (com, row_com)
+                index =  index + 1
+            com = "%s</tr>" % com
         else:
-            com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (com, i[0],i[1],i[2],i[3],i[4], i[5])
+            if 0 == index:
+                com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>%s" % (com, i[0],i[1],i[2],i[3],i[4], i[5], row_com)
+                index = index + 1
+            else:
+                com = "%s\n<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (com, i[0],i[1],i[2],i[3],i[4], i[5])
     return com
 
 if __name__=="__main__":

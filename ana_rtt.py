@@ -190,7 +190,7 @@ if __name__=="__main__":
         rtt_percentage = "%s\ntabledata:(%s)" % (rtt_percentage, re.sub("\n", "",i))
     f.close()
     print "rtt_percentage : %s"
-    res_str = "csv:%s\n%s" % (res[2].split("/"),rtt_percentage)
+    res_str = "csv:%s\n%s" % (res[2].split("/")[-1],rtt_percentage)
     print res_str
     f =open("%s_P" % modfile, "a")
     f.write(res_str)
