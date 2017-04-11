@@ -21,7 +21,7 @@ dirlog(){
     echo "ls -all ${dir}|grep ${logpre}|awk '{print $9}'"
     for i in ${loglist}
     do
-        uelog2rtt $i "../bgw_restart_quickly/uelog/" ${desdir}
+        uelog2rtt $i ${dir} ${desdir}
         cat ${desdir}/${i}_rtt>>${resfile}
     done
     echo "${resfile} has lines:"
@@ -32,4 +32,15 @@ test(){
     echo "start rtt 分析"
     python ana_rtt.py "testdata/test.rttd"
 }
-test
+main(){
+    #处理uelog过程
+    uelog=$1
+    resdir=$2
+    resrttfile=$3
+    echo 'dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" '
+    dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" 
+    echo "start rtt 分析"
+    python ue_rtt/ana_rtt.py "${resrttfile}"
+}
+main $1 $2 $3
+#test

@@ -175,4 +175,5 @@ if __name__=="__main__":
         dp="testdata/test.back"
     x = ana_rtt()
     #print x.doing(dp, None, None, "../testdata/")
+    print dp
     print x.doing(dp, None, None)
