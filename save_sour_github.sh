@@ -8,6 +8,7 @@ do
     cp fuselog/*.py ${ph}
     cp report/*.py ${ph}
     cp ue_rtt/*.py ${ph}
+    cp ue_rtt/*.sh ${ph}
     cp readme ${ph}
     cp *.sh ${ph}
     cur=`pwd`
