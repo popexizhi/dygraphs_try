@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 import datetime, time
 from ProcessDa import ProcessDa
-import random
+import random, re
 import sys, copy
 from Static import *
 DEFLOG = 0
@@ -178,8 +178,20 @@ if __name__=="__main__":
     #print x.doing(dp, None, None, "../testdata/")
     print dp
     res = x.doing(dp, None, None, dir)
-    res_str = "csv:%s\ncsv:%s\ntabledata:ue_rtt:%s" % (res[0],res[2],res[1])
+    res_str = "csv:%s\ntabledata:ue_rtt:%s" % (res[0].split("/")[-1],res[1])
     print res_str
     f =open(modfile, "a")
+    f.write(res_str)
+    f.close()
+
+    rtt_percentage = "tabledata:(percentage,use_time)"
+    f=open(res[2])
+    for i in f.readlines()[1:]:
+        rtt_percentage = "%s\ntabledata:(%s)" % (rtt_percentage, re.sub("\n", "",i))
+    f.close()
+    print "rtt_percentage : %s"
+    res_str = "csv:%s\n%s" % (res[2].split("/"),rtt_percentage)
+    print res_str
+    f =open("%s_P" % modfile, "a")
     f.write(res_str)
     f.close()

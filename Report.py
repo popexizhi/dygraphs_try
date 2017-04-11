@@ -30,7 +30,10 @@ class source_data():
                     self.tabledata=[["name", "max", "min", "num", "avg", "stdev"]]
                     self.fkind = "templet_data"
                 res = self.init_tabledata(x)
-                self.tabledata.append(x[1:2]+res)
+                if len(res) < 4: #非默认数据头
+                    self.tabledata.append(res)
+                else: 
+                    self.tabledata.append(x[1:2]+res)
             if "csv" == x[0]:
                 self.csv.append(x[1])
             if "title" == x[0]:
@@ -62,6 +65,9 @@ class source_data():
         com = re.sub("\n|\(|\)", "", com)
         x = com.split(",")
         print str(x)
+        if len(x) < 4 and 1 == len(self.tabledata) :
+            #非默认数据头,修改为文本中首行
+            self.tabledata=[x]
         return x
 
     def getkind(self):

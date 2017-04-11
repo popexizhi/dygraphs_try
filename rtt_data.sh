@@ -39,14 +39,22 @@ rtt_main(){
     resdir=$2
     resrttfile=$3
     uemod="ue_html.mod"
+    uemodPercent="ue_html.mod_P"
     echo "title:uertt">${resdir}/${uemod}
-    echo "iframe_list:uertt.html">$4 #写入html名称到ifram_mod
+    echo "title:uerttpre">${resdir}/${uemodPercent}
+    echo "iframe_list:uertt.html">>$4 #写入html名称到ifram_mod
     echo "testtime:`date +'%y-%m-%d %H-%M'`">>${resdir}/${uemod}
+    echo "testtime:`date +'%y-%m-%d %H-%M'`">>${resdir}/${uemodPercent}
     echo "des: ue log rtt 统计">>${resdir}/${uemod}
+    echo "des: ue log rtt 分布百分比">>${resdir}/${uemodPercent}
     echo 'dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" '
     dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" 
     echo "start rtt 分析"
     python ue_rtt/ana_rtt.py "${resrttfile}" ${resdir} "${resdir}/${uemod}"
+    cur=`pwd`
+    cd ${resdir}&&python ../report/Report.py ${uemod} 
+    python ../report/Report.py ${uemodPercent} 
+    cd ${cur}
 }
 #rtt_main $1 $2 $3 $4
 #test

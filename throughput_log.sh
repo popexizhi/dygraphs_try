@@ -306,7 +306,7 @@ main(){
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
     #ue log
     echo "sta ue log ......"
-    #rtt_main "${source_log_dir}/uelog/" "${ph}" "${ph}/res.rttd" "${ph}/res.log"
+    rtt_main "${source_log_dir}/uelog/" "${ph}" "${ph}/res.rttd" "${ph}/res.log"
     echo "end ue log ......"
     cat ${ph}/res.log
     #html
