@@ -1,2 +1,4 @@
 #log_dir为要处理的文件夹名称
 ./throughput_log.sh ${log_dir}
+#ue_log_dir for rtt 数据分析和统计结果
+python ue_rtt/ana_rtt.py $filename
