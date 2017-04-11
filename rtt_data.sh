@@ -29,5 +29,7 @@ dirlog(){
 }
 test(){
     dirlog "../bgw_restart_quickly/uelog/" "log.txt" "testdata/test" "testdata/test.rttd" 
+    echo "start rtt 分析"
+    python ana_rtt.py "testdata/test.rttd"
 }
 test

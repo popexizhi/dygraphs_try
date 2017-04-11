@@ -108,9 +108,9 @@ class report():
         
 if __name__=="__main__":
     try:
-	dir = sys.argv[2]
+    	dir = sys.argv[2]
     except IndexError:
-	dir = None
+	    dir = None
     x= source_data(sys.argv[1], dir)
     x.log()
     y = report()

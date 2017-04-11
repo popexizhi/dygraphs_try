@@ -169,7 +169,10 @@ class ana_rtt():
         f.close()
         return "%s.csv" % fp
 if __name__=="__main__":
+    try:
+        dp=sys.argv[1]
+    except IndexError:
+        dp="testdata/test.back"
     x = ana_rtt()
-    dp="testdata/test.back"
     #print x.doing(dp, None, None, "../testdata/")
     print x.doing(dp, None, None)
