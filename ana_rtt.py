@@ -178,7 +178,7 @@ if __name__=="__main__":
     #print x.doing(dp, None, None, "../testdata/")
     print dp
     res = x.doing(dp, None, None, dir)
-    res_str = "csv:%s\ncsv:%s\ntabledata:%s" % (res[0],res[2],res[1])
+    res_str = "csv:%s\ncsv:%s\ntabledata:ue_rtt:%s" % (res[0],res[2],res[1])
     print res_str
     f =open(modfile, "a")
     f.write(res_str)

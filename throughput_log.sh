@@ -1,5 +1,6 @@
 #!/bin/bash
 source log_csv.sh
+source rtt_data.sh
 get_csv(){
     resfp=$1        #log所在文件夹
     grep_kind=$2    #log类型
@@ -274,13 +275,13 @@ save_gw_log(){
 get_csv_time(){
     echo "dir is $1"
     dir=$1
-    log_list=`cat ${dir}/*mod|grep csv|grep -v std_out|grep log|sed 's/csv://g'`
+    log_list=`cat ${dir}/*mod|grep csv|grep -v std_out|grep log|grep -v rtt|sed 's/csv://g'`
     for i in ${log_list}
     do
         log_time ${dir}/${i}
     done
     echo "log_time: ${log_list}"
-    log_list=`cat ${dir}/*mod|grep csv|grep std_out|sed 's/csv://g'`
+    log_list=`cat ${dir}/*mod|grep csv|grep std_out|grep -v rtt|sed 's/csv://g'`
     for i in ${log_list}
     do
         std_log_time ${dir}/${i}
@@ -303,6 +304,12 @@ main(){
 
     save_gw_std ${source_log_dir} ${ph} #fgw/bgw st_log 处理 
     save_gw_log ${source_log_dir} ${ph} #fgw/bgw st_out 处理 
+    #ue log
+    echo "sta ue log ......"
+    #rtt_main "${source_log_dir}/uelog/" "${ph}" "${ph}/res.rttd" "${ph}/res.log"
+    echo "end ue log ......"
+    cat ${ph}/res.log
+    #html
     python report/Report.py "${ph}/res.log" "${ph}"  #html report
     echo "http://192.168.1.216/test/provision_test/load_test/cluster/${source_log_dir}_${use_date}.html">"cluster_test_result_html.txt" #jenkins use file
     sleep 1
@@ -311,8 +318,8 @@ main(){
     sshpass -p'abc123,./' scp -r ${ph} slim@192.168.1.216:/data/provision_test/load_test/cluster/
     mv  *.html back
     mv  ${ph} back
-    rm -rf back
-    mkdir back
+    #rm -rf back
+    #mkdir back
 }
 main $1
 #cluster_test_result_html.txt

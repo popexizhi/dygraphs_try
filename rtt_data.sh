@@ -32,16 +32,21 @@ test(){
     echo "start rtt 分析"
     python ana_rtt.py "testdata/test.rttd"
 }
-main(){
+rtt_main(){
     #处理uelog过程
+    echo "uelogdir:$1; 分析结果保存dir:$2; 结果rttfile:$3; 最终报告的iframe文件列表$4"
     uelog=$1
     resdir=$2
     resrttfile=$3
     uemod="ue_html.mod"
+    echo "title:uertt">${resdir}/${uemod}
+    echo "iframe_list:uertt.html">$4 #写入html名称到ifram_mod
+    echo "testtime:`date +'%y-%m-%d %H-%M'`">>${resdir}/${uemod}
+    echo "des: ue log rtt 统计">>${resdir}/${uemod}
     echo 'dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" '
     dirlog "${uelog}" "log.txt" "${resdir}" "${resrttfile}" 
     echo "start rtt 分析"
     python ue_rtt/ana_rtt.py "${resrttfile}" ${resdir} "${resdir}/${uemod}"
 }
-main $1 $2 $3
+#rtt_main $1 $2 $3 $4
 #test

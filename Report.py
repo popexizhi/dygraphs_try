@@ -7,8 +7,8 @@ class source_data():
         f = open(fp)    
         com = f.readlines()
         f.close()
-	self.dir = dir
-	self.fkind = None
+        self.dir = dir
+        self.fkind = None
         self.init_data(com)
 
     
@@ -18,18 +18,17 @@ class source_data():
         self.title=None
         self.testtime=None
         self.des=None
-	self.destabledata=None
-	self.iframelist=None
+        self.destabledata=None
+        self.iframelist=None
         for i in com:
             i = re.sub("\n", "", i)
             x = i.split(":")    
             if len(x)<2: #字段过小不处理
                 continue
             if "tabledata" == x[0]:
-		if None == self.tabledata:
-                	self.tabledata=[["name", "max", "min", "num", "avg", "stdev"]]
-			self.fkind = "templet_data"
-		
+                if None == self.tabledata:
+                    self.tabledata=[["name", "max", "min", "num", "avg", "stdev"]]
+                    self.fkind = "templet_data"
                 res = self.init_tabledata(x)
                 self.tabledata.append(x[1:2]+res)
             if "csv" == x[0]:
@@ -40,19 +39,19 @@ class source_data():
                 self.testtime = str(x[1])
             if "des" == x[0]:
                 self.des = str(x[1])
-	    if "destabledata" == x[0]:
-		# destabledata:fgw:(2)
-		if None == self.destabledata :
-			self.destabledata = []
-			self.fkind = "output_data"
+            if "destabledata" == x[0]:
+                # destabledata:fgw:(2)
+                if None == self.destabledata :
+                    self.destabledata = []
+                    self.fkind = "output_data"
                 self.destabledata.append([x[1], x[2]])
-	    if "iframe_list" == x[0]:
-		if None == self.iframelist:
-			self.iframelist = []	
-		if None != self.dir:
-			self.iframelist.append([x[1], "%s/%s" % (self.dir ,x[1])])
-		else:
-			self.iframelist.append([x[1], x[1]])
+            if "iframe_list" == x[0]:
+                if None == self.iframelist:
+                    self.iframelist = []    
+                if None != self.dir:
+                    self.iframelist.append([x[1], "%s/%s" % (self.dir ,x[1])])
+                else:
+                    self.iframelist.append([x[1], x[1]])
 
     def init_tabledata(self, data_list, id=-1):
         """
@@ -66,7 +65,7 @@ class source_data():
         return x
 
     def getkind(self):
-	return self.fkind
+        return self.fkind
 
     def log(self):
         print "$"*100
@@ -75,44 +74,49 @@ class source_data():
         print "[des] %s" % str(self.des)
         print "[csv] %s" % str(self.csv)
         print "-"*100
-	if None == self.tabledata :
-	    pass
-	else:
-       	    for i in self.tabledata:
+        if None == self.tabledata :
+            pass
+        else:
+            for i in self.tabledata:
                 print "[tabledata] %s" % str(i)
         
-	if None == self.destabledata :
-	    pass
-	else:
-	    for i in self.destabledata:
-		print "[destabledata] %s" % str(i)
-	if None == self.iframelist:
-	    pass
-	else:
-	    for i in self.iframelist:
-		print "[iframe_list] %s" % str(i)
+        if None == self.destabledata :
+            pass
+        else:
+            for i in self.destabledata:
+                print "[destabledata] %s" % str(i)
+
+        if None == self.iframelist:
+            pass
+        else:
+            for i in self.iframelist:
+                print "[iframe_list] %s" % str(i)
         print "$"*100
 
-	
+    
 
 class report():
     def get_iframe_html(self, source_data):
         self.log(source_data)
-	if "templet_data" == source_data.getkind():
-        	return templet_data(source_data)
-	if "output_data" == source_data.getkind():
-        	return output_data(source_data)
-        
+        if "templet_data" == source_data.getkind():
+            return templet_data(source_data)
+        if "output_data" == source_data.getkind():
+            return output_data(source_data)
+        print "%s is anykind" % str(source_data.title)
+        print "%s is source_data.getkind()" % str(source_data.getkind())
+            
     def log(self, html_source):
         html_source.log()
         
 if __name__=="__main__":
     try:
-    	dir = sys.argv[2]
+        dir = sys.argv[2]
     except IndexError:
-	    dir = None
+        dir = None
     x= source_data(sys.argv[1], dir)
     x.log()
     y = report()
     print "http://192.168.1.216/test/provision_test/load_test/cluster/%s" % str(y.get_iframe_html(x))
+    #print "mod:%s" % (sys.argv[1])
+    #x.log()
 
