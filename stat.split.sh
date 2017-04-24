@@ -13,6 +13,12 @@ split_iostat(){
 
 
 test(){
-    split_iostat logback/192.168.1.113__iostat
+    dir=$1
+    filelist=`ls -all ${dir}|grep iostat$|awk '{print $9}'`
+    for i in ${filelist}
+    do
+        echo "~~~~~~~~~~~~~~~$i~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        split_iostat ${dir}/${i}|tee ${dir}/${i}_tmp
+    done
 }
-test 
+test logback 

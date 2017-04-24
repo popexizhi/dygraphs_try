@@ -22,6 +22,7 @@ ssh_doing(){
     log_pre=$6
     echo "start ${ip} ${cmd_str}"
     sshpass -p "${passwd}" ssh ${user}@${ip} "date +'%F %T'">${backdir}/${ip}_${log_pre} 
+    sshpass -p "${passwd}" ssh ${user}@${ip} "echo ${time_space}">>${backdir}/${ip}_${log_pre} 
     sshpass -p "${passwd}" ssh ${user}@${ip} "${cmd_str} ${time_space}">>${backdir}/${ip}_${log_pre} 
 }
 

@@ -17,8 +17,19 @@ class changefile():
             com.append(line) 
         f.close()
         return com
-    def log(self, str_):
-        print "%s" % str(str_)
+    def log(self, str_, islist=0):
+        if 0 == islist:
+            print "%s" % str(str_)
+        if 1 == islist:
+            #字典打印
+            for i in str_:
+                print "list:\t--%s--%s" % (str(i), str(str_[i]))
+        if 2 == islist:
+            #二维数据打印
+            for i in str_ :
+                print "%s" % str(i)
+
+                
      
     def gettime(self, comlist):
         """
@@ -68,19 +79,42 @@ class changefile():
                 self.log("new time %s" % time)
             else:
                 com[now_time].append(i)
-
+        
+        self.log(com, islist=1) 
         return com        
+    def row_split(self, com):
+        """
+        com = {} key时间戳,value为此时间中的获得内容
+        eg: iostat-- input
+            2017-04-24 14:08:22--[['xvda', '0.00', '5.00', '0.00', '3.00', '0.00', '28.00', '18.67', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00'], ['dm-0', '0.00', '0.00', '0.00', '7.00', '0.00', '28.00', '8.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00'], ['dm-1', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']]
+            output
+            ['2017-04-24 14:08:22', 'xvda', '0.00', '5.00', '0.00', '3.00', '0.00', '28.00', '18.67', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:22', 'dm-0', '0.00', '0.00', '0.00', '7.00', '0.00', '28.00', '8.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:22', 'dm-1', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+
+        """
+        reslist = [] 
+        for key in com:
+            for line in com[key]:
+                reslist.append([key]+line[:])
+        self.log(reslist, islist=2)
+        self.log("[row_split]")
+        return reslist
+
     def doing(self):
         """
         1.获得是起始时间和时间分割间隔
         2.切分时间段
         3.切分列数据
+        4.转置按列顺序切割为多个csv文件
         
         """
         #1.获得是起始时间和时间分割间隔
         sta, spa = self.gettime(self.com)
         #2.切分时间段
-        self.space_com(self.com[2:], sta, spa)
+        com = self.space_com(self.com[2:], sta, spa)
+        #3.切分列数据
+        row_com = self.row_split(com)
 
 if __name__=="__main__":
     x = changefile(sys.argv[1])
