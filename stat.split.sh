@@ -21,6 +21,15 @@ split_mpstat(){
     done
 }
 
+split_vmstat(){
+    fp=$1
+    time=`cat ${fp}|head -n 1`
+    filelist=`cat ${fp}|grep -v "procs"|grep -v "free"|sed 's/^[0-9]\?\+ /time+1\nvmstat &/g'|sed 's/ \+/,/g'` 
+    for i in ${filelist}
+    do
+        echo "${i}"
+    done
+}
 test_iostat(){
     dir=$1
     resdir=$2
@@ -33,8 +42,7 @@ test_iostat(){
         python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i}
     done
 }
-#test_iostat logback "/data2/spotlight_web/iostat"
-test_mpstat(){
+test_stat(){
     dir=$1
     resdir=$2
     stat=$3
@@ -42,9 +50,12 @@ test_mpstat(){
     for i in ${filelist}
     do
         echo "~~~~~~~~~~~~~~~$i~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        split_mpstat ${dir}/${i}|tee ${dir}/${i}_tmp
-        mkdir ${resdir}/${i}
-        python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i} ${stat}
+        #split_mpstat ${dir}/${i}|tee ${dir}/${i}_tmp
+        split_${stat} ${dir}/${i}|tee ${dir}/${i}_tmp
+        #mkdir ${resdir}/${i}
+        #python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i} ${stat}
     done
 }
-test_mpstat logback "/data2/spotlight_web/mpstat" mpstat
+#test_iostat logback "/data2/spotlight_web/iostat"
+#test_stat logback "/data2/spotlight_web/mpstat" mpstat
+test_stat logback "/data2/spotlight_web/vmstat" vmstat
