@@ -171,14 +171,28 @@ class changefile():
         self.log("***********************************all")
         self.log(res_com, islist=1) 
 
-    def secrowstonrows(self, comlist):
+    def secrowstonrows(self, comlist, new_csv_row):
         """ 
-        change 
-
-        to
+        change 两列数据 to 同时间戳数据多列同行显示，eg:参见Sp2CsvTest.py:test_secrowstonrows().__doc__
+        comlist为要求处理的数据列表
+        new_csv_row为新数据集的列标题
 
         """
-
+        tmp_table = comlist
+        res = []
+        res_csv_line = len(tmp_table)/(len(new_csv_row)-1) #新标题中首个为time字段
+        self.log("res_csv_line:%s" % str(res_csv_line))
+        for line in xrange(res_csv_line):
+            line = line * (len(new_csv_row) - 1)
+            com = "%s" % tmp_table[line][0] #time标签
+            self.log("line:%s;com:%s" % (str(line), str(com)) )
+            #中间数据相同时间节点，转储时做同一行数据的处理
+            for i_new_csv_row in xrange(len(new_csv_row) - 1):
+                data = tmp_table[i_new_csv_row + line ][1]
+                com = "%s,%s" % (com, str(data)) 
+            self.log("[file_res]%s" % str(com))
+            res.append(com)
+        return res
     def doing(self):
         """
         1.获得是起始时间和时间分割间隔
