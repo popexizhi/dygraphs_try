@@ -171,7 +171,7 @@ class changefile():
         self.log("***********************************all")
         self.log(res_com, islist=1) 
 
-    def 2rowstonrows(self, comlist):
+    def secrowstonrows(self, comlist):
         """ 
         change 
 
