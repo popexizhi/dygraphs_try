@@ -3,6 +3,7 @@ import re,time,datetime, sys
 from datetime import timedelta
 IOSTAT=["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
 MPSTAT=["usr","nice","sys","iowait","irq","soft","steal","guest","gnice","idle"]
+VMSTAT=["procs-r","procs-b","memory-swpd","memory-free","memory-buff","memory-cache","swap-si","swap-so","io-bi","io-bo","system-in","system-cs","cpu-us","cpu-sy","cpu-id","cpu-wa","cpu-st"]
 class changefile():
     def __init__(self, fp, savedir, stat_kind="iostat"):
         self.fp = fp
@@ -131,6 +132,8 @@ class changefile():
             iostat_row_name=IOSTAT
         if "mpstat" == self.stat_kind:
             iostat_row_name=MPSTAT
+        if "vmstat" == self.stat_kind:
+            iostat_row_name=VMSTAT
 
         assert len(iostat_row_name) == files_num #iostat存储使用
         res_com = {} #存储中间结果集
