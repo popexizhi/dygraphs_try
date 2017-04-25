@@ -4,7 +4,10 @@ from datetime import timedelta
 class changefile():
     def __init__(self, fp):
         self.fp = fp
-        self.com = self.getfplist()
+        if None == self.fp:
+            self.log("no fp is testcase doing")
+        else:
+            self.com = self.getfplist()
         
 
     def getfplist(self):
@@ -100,6 +103,81 @@ class changefile():
         self.log(reslist, islist=2)
         self.log("[row_split]")
         return reslist
+    def transpose2csv(self, row_com):
+        """
+        转置按列顺序切割为多个csv文件
+        eg:
+            time, rrqm/s wrqm/s r/s w/s rkB/s wkB/s avgrq-sz avgqu-sz await r_await w_await svctm %util
+            ['2017-04-24 14:08:31', 'xvda', '0.00', '0.00', '0.00', '6.00', '0.00', '24.00', '8.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:31', 'dm-0', '0.00', '0.00', '0.00', '6.00', '0.00', '24.00', '8.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:31', 'dm-1', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:22', 'xvda', '0.00', '5.00', '0.00', '3.00', '0.00', '28.00', '18.67', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:22', 'dm-0', '0.00', '0.00', '0.00', '7.00', '0.00', '28.00', '8.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            ['2017-04-24 14:08:22', 'dm-1', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            转储为 csv files : rrqm/s wrqm/s r/s w/s rkB/s wkB/s avgrq-sz avgqu-sz await r_await w_await svctm %util
+            每个文件中包含 time,xvda,dm-0,dm-1 列内容
+        """
+        line_row_com = row_com[0] 
+        files_num = len(line_row_com) - 2 #time，iostat中的设备名称不在此范围
+        assert files_num >0 #至少要有一个非时间戳数据
+        #iostat : ["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
+        iostat_row_name=["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
+        assert len(iostat_row_name) == files_num #iostat存储使用
+        res_com = {} #存储中间结果集
+        rescom = {} #存储返回结果集
+
+        for i in iostat_row_name:
+            res_com[i] = [] #初始化结果存储,以字典方式存储每个列的csv
+
+        #获得新文件中的列名称列表,要求全部设备数据在首次时间戳中都出现
+        time_lab = line_row_com[0] #第一个时间戳
+        new_csv_row = ["time"]   
+        for line_row_com in row_com: 
+            #首行标题处理
+            if line_row_com[0] == time_lab: #时间戳未变化时，是结果集中同一行数据
+                new_csv_row.append(line_row_com[1]) #列名称要求为第二个字段名称，iostat显示的格式为列名称
+            #数据处理
+            index = 0 #列游标清零    
+            for list_name_in_files_num in xrange(files_num):
+                file_name = iostat_row_name[index]
+                res_com[file_name].append([line_row_com[0], line_row_com[index+2]]) #time, 对应列的数据 
+                index = index + 1
+        for i in res_com:
+            self.log("***********************************filename:%s" % i)
+            self.log(res_com[i], islist=2)
+        
+        for file in res_com:
+            res = []
+            tmp_table=res_com[file]
+            res_csv_line = len(tmp_table)/(len(new_csv_row)-1) 
+            self.log("res_csv_line:%s" % str(res_csv_line))
+            for line in xrange(res_csv_line):
+                line = line * (len(new_csv_row) - 1)
+                com = "%s" % tmp_table[line][0] #time标签
+                self.log("line:%s;com:%s" % (str(line), str(com)) )
+                #中间数据相同时间节点，转储时做同一行数据的处理
+                for i_new_csv_row in xrange(len(new_csv_row)):
+                    data = tmp_table[i_new_csv_row + line ][1]
+                    com = "%s,%s" % (com, str(data)) 
+                self.log("[file_res]%s" % str(com))
+                res.append(com)
+            assert 1 == 0
+            rescom[file] = res
+            self.log("***********************************filename:%s" % file)
+            self.log(res) 
+        
+        assert 1 == 0
+
+        self.log("***********************************all")
+        self.log(res_com, islist=1) 
+
+    def 2rowstonrows(self, comlist):
+        """ 
+        change 
+
+        to
+
+        """
 
     def doing(self):
         """
@@ -115,6 +193,8 @@ class changefile():
         com = self.space_com(self.com[2:], sta, spa)
         #3.切分列数据
         row_com = self.row_split(com)
+        #4.转置按列顺序切割为多个csv文件
+        self.transpose2csv(row_com)
 
 if __name__=="__main__":
     x = changefile(sys.argv[1])
