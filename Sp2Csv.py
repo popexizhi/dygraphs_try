@@ -26,7 +26,8 @@ class changefile():
         if 1 == islist:
             #字典打印
             for i in str_:
-                print "list:\t--%s--%s" % (str(i), str(str_[i]))
+                print "list:\t--%s--" % (str(i))
+                self.log(str_[i], islist=2)
         if 2 == islist:
             #二维数据打印
             for i in str_ :
@@ -145,31 +146,38 @@ class changefile():
         for i in res_com:
             self.log("***********************************filename:%s" % i)
             self.log(res_com[i], islist=2)
-        
+       
+        csvfiles=[]
         for file in res_com:
-            res = []
-            tmp_table=res_com[file]
-            res_csv_line = len(tmp_table)/(len(new_csv_row)-1) 
-            self.log("res_csv_line:%s" % str(res_csv_line))
-            for line in xrange(res_csv_line):
-                line = line * (len(new_csv_row) - 1)
-                com = "%s" % tmp_table[line][0] #time标签
-                self.log("line:%s;com:%s" % (str(line), str(com)) )
-                #中间数据相同时间节点，转储时做同一行数据的处理
-                for i_new_csv_row in xrange(len(new_csv_row)):
-                    data = tmp_table[i_new_csv_row + line ][1]
-                    com = "%s,%s" % (com, str(data)) 
-                self.log("[file_res]%s" % str(com))
-                res.append(com)
-            assert 1 == 0
-            rescom[file] = res
+            res = self.secrowstonrows(res_com[file], new_csv_row)
             self.log("***********************************filename:%s" % file)
             self.log(res) 
         
-        assert 1 == 0
+            rescom[file] = res
+            fp = "%s.csv" % file
+            csvfiles.append(self.savecsv(fp, new_csv_row, res))
 
         self.log("***********************************all")
-        self.log(res_com, islist=1) 
+        self.log(rescom, islist=1) 
+        return csvfiles, rescom
+        
+    def savecsv(self, fp, rowname, comlist):
+        """
+            save rowname+comlist in fp
+        """
+        #首行标题
+        com = rowname[0]
+        for i in rowname[1:]:
+            com = "%s,%s" % (com, str(i))
+        #数据处理
+        for line in comlist:
+            com = "%s\n%s" % (com, str(line)) 
+        fp = re.sub("/","_", fp)
+        f = open(fp, "w")
+        f.write(com)
+        f.close()
+        return fp
+
 
     def secrowstonrows(self, comlist, new_csv_row):
         """ 

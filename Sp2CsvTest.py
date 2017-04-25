@@ -7,7 +7,8 @@ class changefile_test(unittest.TestCase):
         test transpose2csv
 
         """
-        pass
+        x = changefile("testdata/192.168.1.113__iostat_tmp")
+        x.doing()
     def test_secrowstonrows(self):
         """
         change 
