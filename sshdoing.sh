@@ -2,6 +2,9 @@
 #提供基础的ssh命令使用
 #要求监控主机安装sshpass，
 #被监控主机安装sysstat
+#运行结果分析 stat.split.sh
+source stat.split.sh
+
 ssh_iostatX(){
     time_space=$1
     user=$2
@@ -58,8 +61,11 @@ test(){
     stop vmstat
 }
 main(){
-    
-    ssh_iostat 1 slim password 192.168.1.114  
+    savedir=$1
+    logbdir="logback"
+    test 20
+    test_iostat "${logbdir}" "${savedir}"
+    test_stat "${logbdir}" "${savedir}" "mpstat"
+    test_stat "${logbdir}" "${savedir}" "vmstat"
 }
-
-test 30
+main $1
