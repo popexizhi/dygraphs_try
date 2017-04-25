@@ -1,9 +1,12 @@
 #-*-coding:utf8-*-
 import re,time,datetime, sys
 from datetime import timedelta
+IOSTAT=["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
+MPSTAT=["usr","nice","sys","iowait","irq","soft","steal","guest","gnice","idle"]
 class changefile():
-    def __init__(self, fp, savedir):
+    def __init__(self, fp, savedir, stat_kind="iostat"):
         self.fp = fp
+        self.stat_kind = stat_kind
         if None == self.fp:
             self.log("no fp is testcase doing")
         else:
@@ -122,8 +125,13 @@ class changefile():
         line_row_com = row_com[0] 
         files_num = len(line_row_com) - 2 #time，iostat中的设备名称不在此范围
         assert files_num >0 #至少要有一个非时间戳数据
-        #iostat : ["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
-        iostat_row_name=["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
+
+        if "iostat" == self.stat_kind:
+            #iostat_row_name=["rrqm/s","wrqm/s","r/s","w/s","rkB/s","wkB/s","avgrq-sz","avgqu-sz","await","r_await","w_await","svctm","%util"]
+            iostat_row_name=IOSTAT
+        if "mpstat" == self.stat_kind:
+            iostat_row_name=MPSTAT
+
         assert len(iostat_row_name) == files_num #iostat存储使用
         res_com = {} #存储中间结果集
         rescom = {} #存储返回结果集
@@ -155,7 +163,7 @@ class changefile():
             self.log(res) 
         
             rescom[file] = res
-            fp = "iostat_%s.csv" % file
+            fp = "%s_%s.csv" % (self.stat_kind , file)
             csvfiles.append(self.savecsv(fp, new_csv_row, res))
 
         self.log("***********************************all")
@@ -221,5 +229,5 @@ class changefile():
         self.transpose2csv(row_com)
 
 if __name__=="__main__":
-    x = changefile(sys.argv[1], sys.argv[2])
+    x = changefile(sys.argv[1], sys.argv[2], sys.argv[3])
     x.doing()

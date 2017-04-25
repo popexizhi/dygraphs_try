@@ -11,6 +11,15 @@ split_iostat(){
     done
 }
 
+split_mpstat(){
+    fp=$1
+    time=`cat ${fp}|head -n 1`
+    filelist=`cat ${fp}|sed 's/^$/time+1/g'|grep -v "Device:"|grep -v CPU|sed 's/ \+/,/g'|sed 's/^[0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\},..,//g'` 
+    for i in ${filelist}
+    do
+        echo "${i}"
+    done
+}
 
 test_iostat(){
     dir=$1
@@ -24,4 +33,18 @@ test_iostat(){
         python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i}
     done
 }
-test_iostat logback "/data2/spotlight_web/iostat"
+#test_iostat logback "/data2/spotlight_web/iostat"
+test_mpstat(){
+    dir=$1
+    resdir=$2
+    stat=$3
+    filelist=`ls -all ${dir}|grep _${stat}$|awk '{print $9}'`
+    for i in ${filelist}
+    do
+        echo "~~~~~~~~~~~~~~~$i~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        split_mpstat ${dir}/${i}|tee ${dir}/${i}_tmp
+        mkdir ${resdir}/${i}
+        python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i} ${stat}
+    done
+}
+test_mpstat logback "/data2/spotlight_web/mpstat" mpstat
