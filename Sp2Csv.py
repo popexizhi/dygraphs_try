@@ -2,12 +2,13 @@
 import re,time,datetime, sys
 from datetime import timedelta
 class changefile():
-    def __init__(self, fp):
+    def __init__(self, fp, savedir):
         self.fp = fp
         if None == self.fp:
             self.log("no fp is testcase doing")
         else:
             self.com = self.getfplist()
+            self.savedir = savedir
         
 
     def getfplist(self):
@@ -154,7 +155,7 @@ class changefile():
             self.log(res) 
         
             rescom[file] = res
-            fp = "%s.csv" % file
+            fp = "iostat_%s.csv" % file
             csvfiles.append(self.savecsv(fp, new_csv_row, res))
 
         self.log("***********************************all")
@@ -173,6 +174,7 @@ class changefile():
         for line in comlist:
             com = "%s\n%s" % (com, str(line)) 
         fp = re.sub("/","_", fp)
+        fp = "%s/%s" % (self.savedir, fp)
         f = open(fp, "w")
         f.write(com)
         f.close()
@@ -219,5 +221,5 @@ class changefile():
         self.transpose2csv(row_com)
 
 if __name__=="__main__":
-    x = changefile(sys.argv[1])
+    x = changefile(sys.argv[1], sys.argv[2])
     x.doing()

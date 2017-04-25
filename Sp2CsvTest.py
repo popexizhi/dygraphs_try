@@ -7,7 +7,7 @@ class changefile_test(unittest.TestCase):
         test transpose2csv
 
         """
-        x = changefile("testdata/192.168.1.113__iostat_tmp")
+        x = changefile("testdata/192.168.1.113__iostat_tmp", "testdata")
         x.doing()
     def test_secrowstonrows(self):
         """
@@ -45,7 +45,7 @@ class changefile_test(unittest.TestCase):
         '2017-04-24 14:08:08,188.04,185.10,2.92',
         '2017-04-24 14:08:09,0.00,0.00,0.00',
         '2017-04-24 14:08:24,0.00,0.00,0.00']
-        x = changefile(None)
+        x = changefile(None, None)
         realist = x.secrowstonrows(testlist, ["time", "x", "y", "z"])
         self.assertEqual(realist, prelist)
 if __name__=="__main__":
