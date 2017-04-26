@@ -33,13 +33,13 @@ split_vmstat(){
 test_iostat(){
     dir=$1
     resdir=$2
-    filelist=`ls -all ${dir}|grep iostat$|awk '{print $9}'`
+    filelist=`ls -all ${dir}|grep _iostat$|awk '{print $9}'`
     for i in ${filelist}
     do
         echo "~~~~~~~~~~~~~~~$i~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         split_iostat ${dir}/${i}|tee ${dir}/${i}_tmp
         mkdir ${resdir}/${i}
-        python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i}
+        python Sp2Csv.py ${dir}/${i}_tmp ${resdir}/${i} "iostat"
     done
 }
 test_stat(){
@@ -61,3 +61,5 @@ test_all(){
     test_stat logback "/data2/spotlight_web/mpstat" mpstat
     test_stat logback "/data2/spotlight_web/vmstat" vmstat
 }
+
+#test_iostat logback I iostat

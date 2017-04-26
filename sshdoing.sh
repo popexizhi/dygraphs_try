@@ -49,7 +49,7 @@ ssh_all(){
     ssh_doing $1 $2 $3 $4 "vmstat " "_vmstat" &
     ssh_doing $1 $2 $3 $4 "mpstat -P ALL " "_mpstat" &
 }
-test(){
+ssh_monitor(){
     runtime=$1
     ssh_all 1 slim password 192.168.1.114 &
     ssh_all 1 slim password 192.168.1.113 &
@@ -63,8 +63,8 @@ test(){
 main(){
     savedir=$1
     logbdir="logback"
-    test 20
-    test_iostat "${logbdir}" "${savedir}"
+    ssh_monitor 120
+    test_stat "${logbdir}" "${savedir}" "iostat"
     test_stat "${logbdir}" "${savedir}" "mpstat"
     test_stat "${logbdir}" "${savedir}" "vmstat"
 }
