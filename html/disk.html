@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+		<title></title>
+		<link href="css_js/Properties.css" rel="stylesheet" media="screen">
+        <script type="text/javascript" src="css_js/dygraph-combined-dev.js"></script>
+	</head> 
+	<body class="main">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td class="sp_10px_row"></td>
+			</tr>
+			<tr>
+				<td>
+					<table cols="2" width="100%" height="20" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+<td class="header_page">uertt</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="sp_10px_row"></td>
+			</tr>
+			<tr>
+				<td>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td>
+								<table class="TableSummary" summary="Graph Summary Table">
+									<tr>
+									<td class="text_em" id="LraTitle" width="120"><font class="SummaryHeader">Title:</font></td>
+									<td headers="LraTitle"><font class="Verbl8">uertt</font></td>
+									</tr>
+		<tr>
+									<tr>
+									<td class="text_em" id="LraCurrent Results" width="120"><font class="SummaryHeader">Current Results:</font></td>
+									<td headers="LraCurrent Results"><font class="Verbl8">['resapp_1704111844/res.rttd.csv']</font></td>
+									</tr>
+		<tr>
+									<tr>
+									<td class="text_em" id="LraGranularity" width="120"><font class="SummaryHeader">Duration:</font></td>
+									<td headers="LraGranularity"><font class="Verbl8">17-04-11 18-44</font></td>
+									</tr>
+								</table>
+							</td>
+							<td align="right" valign="top" width="180">
+								<table border="0" cellspacing="0" cellpadding="0">
+									<tr>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="sp_10px_row"></td>
+			</tr>
+			<tr>
+				<td>
+					<div class="pane_full">
+                    <table>
+                    <tr>
+                    <td><div id="graphdivx0" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx1" style="width:700px; height:600px;"></div></td>
+                    </tr>
+                    <tr>
+                    <td><div id="graphdivx2" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx3" style="width:700px; height:600px;"></div></td>
+                    </tr>
+                    <tr>
+                    <td><div id="graphdivx4" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx5" style="width:700px; height:600px;"></div></td>
+                    </tr>
+                    </table>
+<script type="text/javascript">
+    var ip = "192.168.1.212";
+    var stat = "iostat";
+    //stat + "/" + ip + "_" + stat + x[i]
+    var x = [
+    //"vmstat/192.168.1.212__vmstat/vmstat_memory-cache.csv",
+    //"vmstat/192.168.1.212__vmstat/vmstat_cpu-us.csv"
+    "iostat_rkB_s.csv",
+    "iostat_svctm.csv",
+    "iostat_wkB_s.csv",
+    "iostat_avgqu-sz.csv",
+    "iostat_await.csv",
+    "iostat_util.csv"
+        ];
+
+    for (var i =0; i<=x.length; i++){
+      var doc=stat + "/" + ip + "__" + stat + "/" + x[i];
+      g2 = new Dygraph(
+        document.getElementById("graphdivx"+i), //graphdivx1
+        //x[i],
+        doc,
+        {
+          rollPeriod: 1,
+          //avoidMinZero: true,//y轴的最小值不为0，相当于y=0那条线上升了
+          axisLabelWidth:100,//X Y轴的标题的宽度
+          fillGraph: true,//背景色显示      
+          //stackedGraph: true, //叠加图      
+          //stepPlot: true, //数据显示增长步骤
+          title:x[i],//
+        }          // options
+  );
+  }//for end
+</script>
+                                    </div>
+				</td>
+			</tr>
+			<tr>
+				<td class="sp_10px_row"></td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td class="sp_10px_row"></td>
+			</tr>
+			<tr>
+				<td class="sp_5px_row"></td>
+			</tr>
+			<tr>
+				<td class="sp_h_line"><img src="dot_trans.gif" alt="" height="1" width="1" border="0"></td>
+			</tr>
+			<tr>
+				<td class="sp_5px_row"></td>
+			</tr>
+			<tr>
+				<td>
+					<div class="pane_full">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td valign="top"><font class="VerBl8"><b>Description: </b></font><font class="VerBl8">
+                                 ue log rtt 统计
+                                <br>
+									</font></td>
+							</tr>
+			<tr>
+				<td class="sp_5px_row"></td>
+			</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+		</table>
+	</body>
+</html>
