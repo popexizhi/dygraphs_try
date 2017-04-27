@@ -1,4 +1,5 @@
 #-*-coding:utf8-*-
+from CPU_mod import CPU_str
 html_str="""
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -180,12 +181,12 @@ html_str="""
 """
 import re
 import sys
-def get_html_res(ip, dir):
+def get_html_res(ip, dir, MOD=html_str, kind="activity"):
     """
     生成新的html fp
     """
-    res_str = html_str % (ip, dir)
-    fp = "%s_%s_activity.html" % (ip, dir) 
+    res_str = MOD % (ip, dir)
+    fp = "%s_%s_%s.html" % (ip, dir, kind) 
     f = open(fp, "w")
     f.write(res_str)
     f.close()
@@ -196,5 +197,8 @@ if __name__=="__main__":
     #dir = "201704261918"
     ip = sys.argv[1]
     dir = sys.argv[2]
-    fp = get_html_res(ip, dir)
-    print fp
+    reportdic = {"activity": html_str, "CPU":CPU_str}
+    for key in reportdic:
+        fp = get_html_res(ip, dir, reportdic[key], key)
+        print fp
+        
