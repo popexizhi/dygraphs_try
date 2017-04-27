@@ -1,8 +1,5 @@
 #-*-coding:utf8-*-
-from CPU_mod import CPU_str
-from disk_mod import disk_str
-from memory_mod import memory_str
-html_str="""
+memory_str="""
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
@@ -22,7 +19,7 @@ html_str="""
 				<td>
 					<table cols="2" width="100%%" height="20" border="0" cellpadding="0" cellspacing="0">
 						<tr>
-<td class="header_page">activity: vmstat </td>
+<td class="header_page">memory: vmstat </td>
 <div id="ip"> </div>
 						</tr>
 					</table>
@@ -40,49 +37,40 @@ html_str="""
 			<tr>
 				<td>
 					<div class="pane_full">
-                    <table >
+                    <table>
                     <tr>
-                    <td>us列显示了用户进程消耗CPU的时间百分比<div id="graphdivx0" style="width:500px; height:400px;"></div></td>
-                    <td>sy列显示了内核进程消耗CPU的时间百分比<div id="graphdivx1" style="width:500px; height:400px;"></div></td>
-                    <td>wa列表示IO等待所占的CPU时间百分比<div id="graphdivx2" style="width:500px; height:400px;"></div></td> 
-                    </td>
-
+                    <td><div id="graphdivx0" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx1" style="width:700px; height:600px;"></div></td>
                     </tr>
                     <tr>
-                    <td>b列表示在等待资源的进程数，比如正在等待I/O或者内存交换等<div id="graphdivx3" style="width:500px; height:400px;"></div></td>
-                    <td>r列表示运行和等待CPU时间片的进程数<div id="graphdivx4" style="width:500px; height:400px;"></div></td>
-                    <td>si列表示由磁盘调入内存，也就是内存进入内存交换区的数量<div id="graphdivx5" style="width:500px; height:400px;"></div></td>
+                    <td><div id="graphdivx2" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx3" style="width:700px; height:600px;"></div></td>
                     </tr>
                     <tr>
-                    <td>bi列表示从块设备读入的数据总量(KB)<div id="graphdivx6" style="width:500px; height:400px;"></div></td>
-                    <td>bo列表示写入到块设备的数据总量(KB)<div id="graphdivx7" style="width:500px; height:400px;"></div></td>
-                    <td>so列表示由内存调入磁盘<div id="graphdivx8" style="width:500px; height:400px;"></div></td>
+                    <td><div id="graphdivx4" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx5" style="width:700px; height:600px;"></div></td>
                     </tr>
-                    </tr>
-                    <td>cache列表示page cached的内存数量,频繁访问的文件都会被cached<div id="graphdivx9" style="width:500px; height:400px;"></div></td>
-                    <td>free列表示当前空闲的物理内存数量(KB)<div id="graphdivx10" style="width:500px; height:400px;"></div></td>
-                    <td>swpd列表示切换到内存交换区的内存数量(KB)<div id="graphdivx11" style="width:500px; height:400px;"></div></td>
                     <tr>
+                    <td><div id="graphdivx6" style="width:700px; height:600px;"></div></td>
+                    <td><div id="graphdivx7" style="width:700px; height:600px;"></div></td>
+                    </tr>
                     </table>
 <script type="text/javascript">
     var ip = "%s";
     var stat = "vmstat";
     var dir = "%s";
-    //dir + "/" + ip + "_" + stat + x[i]
+    //stat + "/" + ip + "_" + stat + x[i]
     document.getElementById("ip").innerHTML = "ip :"+ ip;
     var x = [
-    "vmstat_cpu-us.csv",
-    "vmstat_cpu-sy.csv",
-    "vmstat_cpu-wa.csv",
-    "vmstat_procs-b.csv",
-    "vmstat_procs-r.csv",
-    "vmstat_swap-si.csv",
-    "vmstat_io-bi.csv",
-    "vmstat_io-bo.csv",
-    "vmstat_swap-so.csv",
-    "vmstat_memory-cache.csv",
     "vmstat_memory-free.csv",
-    "vmstat_memory-swpd.csv"
+    "vmstat_memory-buff.csv",
+    "vmstat_memory-cache.csv",
+    "vmstat_memory-swpd.csv",
+    "vmstat_swap-si.csv",
+    "vmstat_swap-so.csv",
+    "vmstat_io-bi.csv",
+    "vmstat_io-bo.csv"
+
         ];
 
     for (var i =0; i<=x.length; i++){
@@ -181,31 +169,3 @@ html_str="""
 	</body>
 </html>
 """
-import re
-import sys
-def get_html_res(ip, dir, MOD=html_str, kind="activity"):
-    """
-    生成新的html fp
-    """
-    res_str = MOD % (ip, dir)
-    fp = "%s_%s_%s.html" % (ip, dir, kind) 
-    f = open(fp, "w")
-    f.write(res_str)
-    f.close()
-    return fp
-    
-if __name__=="__main__":
-    #ip = "192.168.1.113"
-    #dir = "201704261918"
-    ip = sys.argv[1]
-    dir = sys.argv[2]
-    reportdic ={\
-    "activity": html_str, 
-    "CPU": CPU_str,
-    "disk": disk_str,
-    "memory": memory_str
-    }
-    for key in reportdic:
-        fp = get_html_res(ip, dir, reportdic[key], key)
-        print fp
-        
