@@ -1,5 +1,6 @@
 #-*-coding:utf8-*-
 from CPU_mod import CPU_str
+from disk_mod import disk_str
 html_str="""
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -197,7 +198,11 @@ if __name__=="__main__":
     #dir = "201704261918"
     ip = sys.argv[1]
     dir = sys.argv[2]
-    reportdic = {"activity": html_str, "CPU":CPU_str}
+    reportdic ={\
+    "activity": html_str, 
+    "CPU": CPU_str,
+    "disk": disk_str
+    }
     for key in reportdic:
         fp = get_html_res(ip, dir, reportdic[key], key)
         print fp
