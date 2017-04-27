@@ -51,14 +51,31 @@ ssh_all(){
 }
 ssh_monitor(){
     runtime=$1
-    ssh_all 1 slim password 192.168.1.114 &
-    ssh_all 1 slim password 192.168.1.113 &
-    ssh_all 1 slim abc123,./ 192.168.1.212 &
+    #test_use
+    L2_use
     echo "wait "
     sleep ${runtime}
     stop iostat
     stop mpstat
     stop vmstat
+}
+test_use(){
+
+    ssh_all 1 slim password 192.168.1.114 &
+    ssh_all 1 slim password 192.168.1.113 &
+    ssh_all 1 slim abc123,./ 192.168.1.212 &
+}
+L2_use(){
+    ssh_all 1 slim abc123,./ 192.168.1.80 &
+    ssh_all 1 slim abc123,./ 192.168.1.207 &
+    ssh_all 1 slim abc123,./ 192.168.1.73 &
+    ssh_all 1 slim abc123,./ 192.168.1.74 &
+    ssh_all 1 slim password 192.168.1.113 &
+    ssh_all 1 slim password 192.168.1.114 &
+    ssh_all 1 slim abc123,./ 192.168.1.212 &
+    ssh_all 1 slim password 172.16.101.3 &
+    ssh_all 1 slim password 192.168.1.56 &
+    ssh_all 1 slim password 192.168.1.58 &
 }
 main(){
     savedir=$1
