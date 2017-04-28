@@ -46,7 +46,9 @@ test_stat(){
     dir=$1
     resdir=$2
     stat=$3
+    echo "[test_stat]: -${dir}-${resdir}-${stat}"
     filelist=`ls -all ${dir}|grep _${stat}$|awk '{print $9}'`
+    echo "[test_stat]: filelist--${filelist}"
     for i in ${filelist}
     do
         echo "~~~~~~~~~~~~~~~$i~~~~~~~~~~~~~~~~~~~~~~~~~~~~"

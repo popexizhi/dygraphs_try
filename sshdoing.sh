@@ -4,6 +4,7 @@
 #被监控主机安装sysstat
 #运行结果分析 stat.split.sh
 source stat.split.sh
+source savehtml.sh
 
 ssh_iostatX(){
     time_space=$1
@@ -78,11 +79,19 @@ L2_use(){
     ssh_all 1 slim password 192.168.1.58 &
 }
 main(){
-    savedir=$1
-    logbdir="logback"
+    savedir=`date +%Y%m%d%H%M%s`
+    logdir="logback"
+    echo "savedir:${savedir}" 
+    mkdir ${savedir}
+    rm -rf ${logdir}
+    mkdir ${logdir}
     ssh_monitor 120
-    test_stat "${logbdir}" "${savedir}" "iostat"
-    test_stat "${logbdir}" "${savedir}" "mpstat"
-    test_stat "${logbdir}" "${savedir}" "vmstat"
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get csv file"
+    test_stat "${logdir}" "${savedir}" "iostat"
+    test_stat "${logdir}" "${savedir}" "mpstat"
+    test_stat "${logdir}" "${savedir}" "vmstat"
+
+    echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get html report"
+    L2_host ${savedir}
 }
-main $1
+main
