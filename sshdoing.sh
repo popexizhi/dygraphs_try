@@ -85,13 +85,14 @@ main(){
     mkdir ${savedir}
     rm -rf ${logdir}
     mkdir ${logdir}
-    ssh_monitor 120
+    ssh_monitor 1800
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get csv file"
     test_stat "${logdir}" "${savedir}" "iostat"
     test_stat "${logdir}" "${savedir}" "mpstat"
     test_stat "${logdir}" "${savedir}" "vmstat"
 
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get html report"
-    L2_host ${savedir}
+    echo "${savedir} html res">${savedir}.log
+    L2_host ${savedir} ${savedir}.log
 }
 main
