@@ -15,7 +15,7 @@ split_mpstat(){
     fp=$1
     time=`cat ${fp}|head -n 1`
     #filelist=`cat ${fp}|sed 's/^$/time+1/g'|grep -v "Device:"|grep -v CPU|sed 's/ \+/,/g'|sed 's/^[0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\},..,//g'` 
-    filelist=`cat ${fp}|sed 's/^$/time+1/g'|grep -v "Device:"|grep -v CPU|sed 's/ \+/,/g'|sed 's/^\([0-9]\{2\}.*秒,\)\|\([0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\},..,\)//g'` 
+    filelist=`cat ${fp}|sed 's/^$/time+1/g'|grep -v "Device:"|grep -v CPU|sed 's/ \+/,/g'|sed 's/^\([0-9]\{2\}.*秒,\)\|\([0-9]\{2\}:[0-9]\{2\}:[0-9]\{2\},...\?,\)//g'` 
     for i in ${filelist}
     do
         echo "${i}"
