@@ -18,7 +18,7 @@ L2_use(){
     ssh_all 1 slim password 192.168.1.56 &
     ssh_all 1 slim password 192.168.1.58 &
 }
-load_test_use(){
+Load_test_use(){
     ssh_all 1 slim abc123,./ 192.168.1.80 &
     ssh_all 1 slim abc123,./ 192.168.1.84 &
     ssh_all 1 slim abc123,./ 192.168.1.207 &

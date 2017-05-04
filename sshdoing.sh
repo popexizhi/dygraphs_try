@@ -54,7 +54,9 @@ ssh_all(){
 ssh_monitor(){
     runtime=$1
     #test_use
-    L2_use
+    #L2_use
+    echo "monitor:$2_use"
+    $2_use
     echo "wait "
     sleep ${runtime}
     stop iostat
@@ -69,7 +71,7 @@ main(){
     mkdir ${savedir}
     rm -rf ${logdir}
     mkdir ${logdir}
-    ssh_monitor $1
+    ssh_monitor $1 $2
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get csv file"
     test_stat "${logdir}" "${savedir}" "iostat"
     test_stat "${logdir}" "${savedir}" "mpstat"
@@ -77,6 +79,6 @@ main(){
 
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get html report"
     echo "${savedir} html res">${savedir}.log
-    L2_host ${savedir} ${savedir}.log
+    $2_host ${savedir} ${savedir}.log
 }
-main $1
+main $1 $2
