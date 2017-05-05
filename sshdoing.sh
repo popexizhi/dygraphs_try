@@ -81,4 +81,5 @@ main(){
     echo "${savedir} html res">${savedir}.log
     $2_host ${savedir} ${savedir}.log
 }
-main $1 $2
+main $1 $2>_tmp
+cat _tmp|grep "^http:"
