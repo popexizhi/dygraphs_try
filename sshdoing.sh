@@ -44,7 +44,7 @@ ssh_memory(){
 stop(){
     grep_cmd=$1
     echo "stop ${grep_cmd}"
-    ps -ef|grep ${grep_cmd}|grep -v grep|awk '{print "pid:$2,$9";system("kill -9 "$2)}'
+    ps -ef|grep ${grep_cmd}|grep -v grep|awk '{print "pid:"$2","$9;system("kill -9 "$2)}'
 }
 ssh_all(){
     ssh_doing $1 $2 $3 $4 "iostat -x -d -k " "_iostat" &
@@ -69,7 +69,7 @@ main(){
     logdir="logback"
     echo "savedir:${savedir}" 
     mkdir ${savedir}
-    rm -rf ${logdir}
+    mv ${logdir} ${logdir}_tmp
     mkdir ${logdir}
     ssh_monitor $1 $2
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get csv file"
@@ -80,6 +80,20 @@ main(){
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start get html report"
     echo "${savedir} html res">${savedir}.log
     $2_host ${savedir} ${savedir}.log
+    get_one_html $2 ${savedir}
+    
+}
+get_one_html(){
+    #生成一个html报告
+    ng_dir="/data2/spotlight_web/"
+    savedir=$2
+    if [ "Load_test" == $1 ]
+    then
+        python loadtest_html.py ${savedir} 
+        mv ${savedir}.html ${ng_dir} 
+        echo "load_test环境监控报告:http://192.168.1.216/spotlight_web/${savedir}.html"
+    fi
+    
 }
 main $1 $2>_tmp
-cat _tmp|grep "^http:"
+cat _tmp|grep "^http:\|load_test环境监控报告"

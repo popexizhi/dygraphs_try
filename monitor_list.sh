@@ -42,6 +42,8 @@ Relay_test_use(){
     ssh_all 1 slim abc123,./ 192.168.1.75 &
     ssh_all 1 slim abc123,./ 192.168.1.76 &
     ssh_all 1 slim password 192.168.1.99 &
+    ssh_all 1 slim password 172.16.110.2 &
+    ssh_all 1 slim password 172.16.110.3 &
     ssh_all 1 slim abc123,./ 192.168.1.212 &
     ssh_all 1 slim abc123,./ 192.168.1.208 &
     ssh_all 1 slim password 172.16.101.3 &
